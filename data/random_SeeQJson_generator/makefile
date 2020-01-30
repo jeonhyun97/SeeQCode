@@ -1,5 +1,5 @@
-sample_generator : sample_generator.o class.o method.o commit.o helper.o
-	g++ -o generator sample_generator.o class.o method.o commit.o helper.o
+sample_generator : sample_generator.o class.o method.o commit.o helper.o generate.o
+	g++ -o generator sample_generator.o class.o method.o commit.o helper.o generate.o
 
 sample_generator.o : sample_generator.cpp
 	g++ -c sample_generator.cpp -o sample_generator.o
@@ -15,6 +15,9 @@ commit.o : commit.cpp commit.h
 
 helper.o : helper.cpp helper.h
 	g++ -c helper.cpp
+
+generate.o : generate.cpp generate.h
+	g++ -c generate.cpp
 
 clean:
 	rm *.o generator

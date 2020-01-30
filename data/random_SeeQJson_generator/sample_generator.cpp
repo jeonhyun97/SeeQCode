@@ -5,17 +5,22 @@
 #include "class.h"
 #include "method.h"
 #include "commit.h"
+#include "helper.h"
+#include "generate.h"
 
 using namespace std;
 
+
+void printSeeQJson(vector<Class*>* stem) {
+    cout << "[" << endl;
+    printJsonClasses(*stem, "   ");
+    cout << "]" << endl;
+}
+
 int main() {
 
-    // redirecting output stream...
-    ofstream out("../sample/random_SeeQ.json");
-    streambuf *coutbuf = cout.rdbuf();
-    cout.rdbuf(out.rdbuf());
-    
-    cout << "[" << endl;
+/*
+    vector<Class*> classes;
 
     Class* parent_class = new Class("parent", "abstract", NULL);
     Class* child_class = new Class("child", "final", parent_class);
@@ -36,13 +41,21 @@ int main() {
     parent_class->addSubClass(subclass_1);
     parent_class->addSubClass(subclass_2);
 
-    parent_class->printJson("   ");
-    cout << "," << endl;
-    child_class->printJson("   ");
+    classes.push_back(parent_class);
+    classes.push_back(child_class);
 
-    cout << endl;
+*/
+    // generating random SeeQJson Structure
+    vector<Class*>* stem = new vector<Class*>();
+    generateRandomSeeQJson(stem);
 
-    cout << "]" << endl;
+    // redirecting output stream...
+    ofstream out("../sample/random_SeeQ.json");
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+
+    // print SeeQJson file
+    printSeeQJson(stem);
 
     // restoring output stream
     cout.rdbuf(coutbuf);
