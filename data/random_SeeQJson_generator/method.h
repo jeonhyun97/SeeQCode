@@ -18,7 +18,6 @@ private:
 public:
     Method(string name, string modifier);
     void printJson(string indent);
-    string getName();
 };
 
 

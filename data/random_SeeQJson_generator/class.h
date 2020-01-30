@@ -26,7 +26,12 @@ public:
     Class(string name, string modifier, Class* parent);
     void printJson(string indent);
     void addChild(Class* child);
+    void addSubClass(Class* subclass);
+    void addMethod(Method* method);
+    void addCommit(Commit* commit);
     string getName();
+
+
 
 };
 

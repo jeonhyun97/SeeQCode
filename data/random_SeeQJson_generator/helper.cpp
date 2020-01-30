@@ -18,19 +18,23 @@ void printClasses(vector<Class*> classes, string indent) {
 void printMethods(vector<Method*> methods, string indent) {
     vector<Method*> :: iterator iter;
     for(iter = methods.begin(); iter != methods.end();) {
-        cout << (*iter)->getName();
+        (*iter)->printJson(indent);
         iter++;
         if(iter != methods.end())
             cout << ", " << endl;
+        else
+            cout << endl;
     }
 }
 
 void printCommits(vector<Commit*> commits, string indent) {
     vector<Commit*> :: iterator iter;
     for(iter = commits.begin(); iter != commits.end();) {
-        cout << (*iter)->getSha();
+        (*iter)->printJson(indent);
         iter++;
         if(iter != commits.end())
             cout << "," << endl;
+        else 
+            cout << endl;
     }
 }
