@@ -14,6 +14,17 @@ void printClasses(vector<Class*> classes, string indent) {
     }
 }
 
+void printJsonClasses(vector<Class*> classes, string indent) {
+    vector<Class*> :: iterator iter;
+    for(iter = classes.begin(); iter != classes.end();) {
+        (*iter)->printJson(indent);
+        iter++;
+        if(iter != classes.end())
+            cout << ", " << endl;
+        else
+            cout << endl;
+    }
+}
 
 void printMethods(vector<Method*> methods, string indent) {
     vector<Method*> :: iterator iter;

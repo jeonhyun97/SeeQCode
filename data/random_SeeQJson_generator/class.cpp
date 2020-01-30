@@ -25,9 +25,9 @@ void Class :: printJson(string indent) {
 
     cout << tab << "   \"type\" : " << type << "," << endl;
 
-    cout << tab << "   \"subclasses\" : [ " ;
-    printClasses(subclasses, next_tab);
-    cout << tab << " ]," << endl; 
+    cout << tab << "   \"subclasses\" : [" << endl;
+    printJsonClasses(subclasses, next_tab + "   ");
+    cout << tab << "   ]," << endl; 
 
     cout << tab << "   \"methods\" : [" << endl;
     printMethods(methods, next_tab + "   ");

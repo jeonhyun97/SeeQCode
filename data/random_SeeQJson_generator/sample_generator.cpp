@@ -16,6 +16,12 @@ int main() {
     Method* method_2 = new Method("method2", "private");
     child_class->addMethod(method_1);
     child_class->addMethod(method_2);
+
+    Commit* commit_1 = new Commit("master", "Initial Commit", "jeonhyun97", "20200101", "111111", 10, 9, 4, 3);
+    Commit* commit_2 = new Commit("master", "ADD README", "jeon2", "20200103", "222222", 11, 9, 4, 3);
+    parent_class->addCommit(commit_1);
+    method_1->addCommit(commit_1);
+    method_1->addCommit(commit_2);
     
     
     parent_class->printJson("");

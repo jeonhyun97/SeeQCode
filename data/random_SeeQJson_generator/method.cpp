@@ -29,3 +29,5 @@ void Method :: printJson(string indent) {
 
     cout << indent << "}";
 }
+
+void Method :: addCommit(Commit* commit) { commits.push_back(commit); }
