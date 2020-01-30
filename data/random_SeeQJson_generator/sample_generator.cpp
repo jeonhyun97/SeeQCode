@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 
 #include "class.h"
 #include "method.h"
@@ -8,8 +10,14 @@ using namespace std;
 
 int main() {
 
-    Class* parent_class = new Class("parent", "abstract", NULL);
+    // redirecting output stream...
+    ofstream out("../sample/random_SeeQ.json");
+    streambuf *coutbuf = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+    
+    cout << "[" << endl;
 
+    Class* parent_class = new Class("parent", "abstract", NULL);
     Class* child_class = new Class("child", "final", parent_class);
 
     Method* method_1 = new Method("method1", "public");
@@ -22,13 +30,22 @@ int main() {
     parent_class->addCommit(commit_1);
     method_1->addCommit(commit_1);
     method_1->addCommit(commit_2);
-    
-    
-    parent_class->printJson("");
+
+    Class* subclass_1 = new Class("subclass 1", "NONE", NULL);
+    Class* subclass_2 = new Class("subclass 2", "NONE", NULL);
+    parent_class->addSubClass(subclass_1);
+    parent_class->addSubClass(subclass_2);
+
+    parent_class->printJson("   ");
     cout << "," << endl;
-    child_class->printJson("");
+    child_class->printJson("   ");
 
     cout << endl;
+
+    cout << "]" << endl;
+
+    // restoring output stream
+    cout.rdbuf(coutbuf);
 
     return 0;
 }

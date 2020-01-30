@@ -21,7 +21,7 @@ void Class :: printJson(string indent) {
     string next_tab = indent +  "   ";
 
     // print start
-    cout << "{" << endl;
+    cout << tab << "{" << endl;
 
     cout << tab << "   \"type\" : " << type << "," << endl;
 
