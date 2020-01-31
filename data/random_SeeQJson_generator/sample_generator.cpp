@@ -60,5 +60,8 @@ int main() {
     // restoring output stream
     cout.rdbuf(coutbuf);
 
+    cout << "Program finished successfully!!!" << endl;
+    cout << "check the result by executing cat ../sample/random_SeeQ.json" << endl;
+
     return 0;
 }

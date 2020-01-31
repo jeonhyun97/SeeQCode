@@ -55,17 +55,15 @@ void addClass(vector<Class*>* stem, Commit* commit) {
     else if(gambling(50)) modifier = "interface";
     else modifier = "final";
 
-    Class* parent;
-    if (gambling(80)) parent = NULL;
-    else parent = (*stem)[random(0, stem->size() - 1)];
 
+    Class* parent;
+    if (gambling(80) || stem->size() == 0) parent = NULL;
+    else parent = (*stem)[random(0, stem->size() - 1)];
     Class* new_class = new Class(name, modifier, parent);
     new_class->addCommit(commit_instance);
-    if(parent == NULL) {
+    if(parent == NULL && stem->size() > 0) {
         if(gambling(10)) {
-            cout << "REE" << endl;
             (*stem)[random(0, stem->size() - 1)]->addSubClass(new_class);
-            cout << "FUNC" << endl;
             return;
         }
     }
@@ -138,7 +136,7 @@ Commit* addCommit(int branchNum, int authorNum, string* branches, string* author
         stream << hex << current;
     }
     string sha = stream.str();
-    string message = "(" + date + ") " + "Commit #" + to_string(i) + " ["  + sha + "]" + " done by " + author + " in branch \"" + branch +"\"";
+    string message = "(" + date + ") " + "Commit #" + to_string(i) + " ["  + sha + "]" + " done by " + author + " in branch @" + branch;
 
     return new Commit(branch, message, author, date, sha);
 }
@@ -151,19 +149,9 @@ void generateCommits(int commitNum, vector<Class*>* stem) {
 
     string branches[6] = {"master", "dev", "working", "feature", "issue", "hotfix"};
     int branchNum = random(2, 6);
-    cout << "Branch : " << branchNum << " [ "; 
-    for(int i = 0; i < branchNum; i++) {
-        cout << branches[i] << " ";
-    }
-    cout << "]" << endl;
 
     string authors[7] = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace"};
     int authorNum = random(7);
-    cout << "Author : " << authorNum << " [ ";
-    for(int i = 0; i < authorNum; i++) {
-        cout << authors[i] << " ";
-    }
-    cout << "]" << endl;
 
 
     // members
@@ -180,16 +168,28 @@ void generateCommits(int commitNum, vector<Class*>* stem) {
         Commit* current_commit = addCommit(branchNum, authorNum, branches, authors, i);
         addClasses(stem, progress, current_commit);
     }
+
+    cout << "Class  : " << stem->size() << " classes" << endl;
+    cout << "Branch : " << branchNum << " [ "; 
+    for(int i = 0; i < branchNum; i++) {
+        cout << branches[i] << " ";
+    }
+    cout << "]" << endl;
+    cout << "Author : " << authorNum << " [ ";
+    for(int i = 0; i < authorNum; i++) {
+        cout << authors[i] << " ";
+    }
+    cout << "]" << endl;
 }
 
 
 void generateRandomSeeQJson(vector<Class*>* stem) {
     srand(time(NULL));
 
-    cout << "==================" << endl;
+    cout << "=============================" << endl;
     generateCommits(random(50, 300), stem);
-    cout << "==================" << endl;
-    cout << "SUCCESSFUL GENERATION...";
+    cout << "=============================" << endl;
+    cout << "SUCCESSFUL GENERATION..." << endl;
 
     return;
 }
