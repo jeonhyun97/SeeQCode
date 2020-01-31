@@ -4,18 +4,13 @@
 
 using namespace std;
 
-Commit :: Commit(string branch, string message, string author, string date, string sha,
-           float code_smell, float metric, float documentation, float test_coverage) {
+Commit :: Commit(string branch, string message, string author, string date, string sha){
     this->type = "\"commit\"";
     this->branch = "\"" + branch + "\"" ;
     this->message = "\"" + message + "\"";
     this->author = "\"" + author + "\"";
     this->date = "\"" + date + "\"";
     this->sha = "\"" + sha + "\"";
-    this->code_smell = code_smell;
-    this->metric = metric;
-    this->documentation = documentation;
-    this->test_coverage = test_coverage;
 
 }
 void Commit :: printJson(string indent){
