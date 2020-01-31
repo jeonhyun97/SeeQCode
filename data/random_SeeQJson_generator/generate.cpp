@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include <set>
 
 using namespace std;
 
@@ -39,14 +40,19 @@ bool gambling(int percentage) {
     else return true;
 }
 
-void addClass(vector<Class*>* stem, Commit* commit) {
+Commit* createCommitInstance(Commit* commit) {
     Commit* commit_instance = new Commit(*commit);
     float code_smell = (float)random(100, 1000) / 100;
     float metric = (float)random(100, 1000) / 100;
     float documentation = (float)random(100, 1000) / 100;
     float test_coverage = (float)random(100, 1000) / 100;
     commit_instance->setScore(code_smell, metric, documentation, test_coverage);
+    return commit_instance;
+}
 
+
+void addClass(vector<Class*>* stem, Commit* commit) {
+    Commit* commit_instance = createCommitInstance(commit);
     string name = "test_class_" + to_string(stem->size() + 1);
     
     string modifier;
@@ -95,8 +101,24 @@ void addMethods() {
 
 }
 
-void updateClasses() {
+void updateClasses(vector<Class*>* stem, Commit* commit) {
+    if(stem->size() == 0) return;
+    int update_class_num = random(10);
 
+    set<int> update_class_set;
+    for(int i = 0; i < update_class_num; i++) { update_class_set.insert(random(0, stem->size() -1)); }
+
+    set<int> :: iterator iter;
+    for(iter = update_class_set.begin(); iter != update_class_set.end() ; iter++) {
+        Class* target = (*stem)[*iter];
+        if(target->getSubClassNum() > 0) {
+            if(gambling(50)) {
+                target = target->getSubClass(random(target->getSubClassNum()) - 1);
+            }
+        }
+        Commit* commit_instance = createCommitInstance(commit);
+        target->addCommit(commit_instance);
+    }
 }
 
 void updateMethods() {
@@ -121,7 +143,7 @@ string getNextDate() {
     return year + month + day;
 }
 
-Commit* addCommit(int branchNum, int authorNum, string* branches, string* authors, int i) {
+Commit* newCommit(int branchNum, int authorNum, string* branches, string* authors, int i) {
     
     
     if(!gambling(70)) current_branch_index = gambling(30) ? 0 : random(0, branchNum - 1);
@@ -165,7 +187,8 @@ void generateCommits(int commitNum, vector<Class*>* stem) {
 
     for(int i = 0; i < commitNum; i++) {
         float progress = (float)i / (float) commitNum;
-        Commit* current_commit = addCommit(branchNum, authorNum, branches, authors, i);
+        Commit* current_commit = newCommit(branchNum, authorNum, branches, authors, i);
+        updateClasses(stem, current_commit);
         addClasses(stem, progress, current_commit);
     }
 

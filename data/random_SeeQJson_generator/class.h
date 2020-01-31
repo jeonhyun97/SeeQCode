@@ -30,7 +30,10 @@ public:
     void addSubClass(Class* subclass);
     void addMethod(Method* method);
     void addCommit(Commit* commit);
-    string getName();
+
+    string getName() { return name; }
+    int getSubClassNum() { return subclasses.size(); }
+    Class* getSubClass(int index) { return subclasses[index]; }
 
 
 

@@ -60,7 +60,3 @@ void Class :: addChild(Class* child) { children.push_back(child); }
 void Class :: addSubClass(Class* subclass) { subclasses.push_back(subclass); }
 void Class :: addMethod(Method* method) { methods.push_back(method); }
 void Class :: addCommit(Commit* commit) { commits.push_back(commit); }
-
-string Class :: getName() {
-    return name;
-}
