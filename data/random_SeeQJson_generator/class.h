@@ -26,7 +26,7 @@ public:
     Class(string name, string modifier, Class* parent);
     void printJson(string indent);
     
-    void addChild(Class* child);
+    void addChild(Class* child); // contained in constructor, no need to call
     void addSubClass(Class* subclass);
     void addMethod(Method* method);
     void addCommit(Commit* commit);

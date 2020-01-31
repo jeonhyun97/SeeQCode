@@ -13,6 +13,15 @@ Commit :: Commit(string branch, string message, string author, string date, stri
     this->sha = "\"" + sha + "\"";
 
 }
+
+Commit :: Commit(Commit& ref) {
+    this->type = "\"commit\"";
+    this->branch = ref.getBranch();
+    this->message = ref.getMessage();
+    this->author = ref.getAuthor();
+    this->date = ref.getDate();
+    this->sha = ref.getSha();
+}
 void Commit :: printJson(string indent){
     string tab = indent;
     string next_tab = indent + "   ";
@@ -34,7 +43,13 @@ void Commit :: printJson(string indent){
 
     cout << tab << "   }" << endl;
     
-
     cout << tab << "}";
+}
+
+void Commit :: setScore(float code_smell, float metric, float documentation, float test_coverage) {
+    this->code_smell = code_smell;
+    this->metric = metric;
+    this->documentation = documentation;
+    this->test_coverage = test_coverage;
 }
    

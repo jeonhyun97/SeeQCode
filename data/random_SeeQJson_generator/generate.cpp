@@ -1,5 +1,7 @@
 
 #include "generate.h"
+#include "commit.h"
+#include "class.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -37,6 +39,39 @@ bool gambling(int percentage) {
     else return true;
 }
 
+void addClass(vector<Class*>* stem, Commit* commit) {
+    Commit* commit_instance = new Commit(*commit);
+    float code_smell = (float)random(100, 1000) / 100;
+    float metric = (float)random(100, 1000) / 100;
+    float documentation = (float)random(100, 1000) / 100;
+    float test_coverage = (float)random(100, 1000) / 100;
+    commit_instance->setScore(code_smell, metric, documentation, test_coverage);
+
+    string name = "test_class_" + to_string(stem->size() + 1);
+    
+    string modifier;
+    if(gambling(50)) modifier = "NONE";
+    else if(gambling(33)) modifier = "abstract";
+    else if(gambling(50)) modifier = "interface";
+    else modifier = "final";
+
+    Class* parent;
+    if (gambling(80)) parent = NULL;
+    else parent = (*stem)[random(0, stem->size() - 1)];
+
+    Class* new_class = new Class(name, modifier, parent);
+    new_class->addCommit(commit_instance);
+    if(parent == NULL) {
+        if(gambling(10)) {
+            cout << "REE" << endl;
+            (*stem)[random(0, stem->size() - 1)]->addSubClass(new_class);
+            cout << "FUNC" << endl;
+            return;
+        }
+    }
+    stem->push_back(new_class);
+}
+
 
 void addClasses(vector<Class*>* stem, float progress, Commit* commit) {
     progress = 0.01 > progress ? 0.01: progress;
@@ -44,14 +79,18 @@ void addClasses(vector<Class*>* stem, float progress, Commit* commit) {
     current_percentage = 100 - min(max(current_percentage, 50), 95);
     if(gambling(current_percentage) && stem->size() < 40) {
         if(gambling(15)){
-            if(gambling(40)) {}
-            
-            else {}
-        
+            if(gambling(40)) {
+                addClass(stem, commit);
+                addClass(stem, commit);
+                addClass(stem, commit);
+            }
+            else {
+                addClass(stem, commit);
+                addClass(stem, commit);
+            }
         }
-        else {}
+        else addClass(stem, commit);
     }
-
 }
 
 void addMethods() {
@@ -101,7 +140,6 @@ Commit* addCommit(int branchNum, int authorNum, string* branches, string* author
     string sha = stream.str();
     string message = "(" + date + ") " + "Commit #" + to_string(i) + " ["  + sha + "]" + " done by " + author + " in branch \"" + branch +"\"";
 
-    cout << message << endl;
     return new Commit(branch, message, author, date, sha);
 }
 
@@ -140,6 +178,7 @@ void generateCommits(int commitNum, vector<Class*>* stem) {
     for(int i = 0; i < commitNum; i++) {
         float progress = (float)i / (float) commitNum;
         Commit* current_commit = addCommit(branchNum, authorNum, branches, authors, i);
+        addClasses(stem, progress, current_commit);
     }
 }
 
@@ -150,6 +189,7 @@ void generateRandomSeeQJson(vector<Class*>* stem) {
     cout << "==================" << endl;
     generateCommits(random(50, 300), stem);
     cout << "==================" << endl;
+    cout << "SUCCESSFUL GENERATION...";
 
     return;
 }
