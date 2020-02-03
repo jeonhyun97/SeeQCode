@@ -24,6 +24,9 @@ int current_month = 1;
 int current_day = 1;
 
 
+int methodNum = 0; 
+
+
 int random(int start, int end) { // start <= num <= end
     int possibility = end - start + 1;
     return rand() % possibility + start;
@@ -51,6 +54,22 @@ Commit* createCommitInstance(Commit* commit) {
 }
 
 
+void addMethods(Class* target, Commit* commit) {
+    int new_method_num = random(3);
+    if(gambling(80)) new_method_num = 1;
+    if(gambling(60)) new_method_num = 0;
+
+    for(int i = 0; i < new_method_num; i++) {
+        Commit* commit_instance = createCommitInstance(commit);
+        Method* new_method = new Method("test", "protected");
+        new_method->addCommit(commit_instance);
+        target->addMethod(new_method);
+    }
+    methodNum += new_method_num;
+}
+
+
+
 void addClass(vector<Class*>* stem, Commit* commit) {
     Commit* commit_instance = createCommitInstance(commit);
     string name = "test_class_" + to_string(stem->size() + 1);
@@ -73,8 +92,11 @@ void addClass(vector<Class*>* stem, Commit* commit) {
             return;
         }
     }
+    addMethods(new_class, commit);
     stem->push_back(new_class);
 }
+
+
 
 
 void addClasses(vector<Class*>* stem, float progress, Commit* commit) {
@@ -97,13 +119,11 @@ void addClasses(vector<Class*>* stem, float progress, Commit* commit) {
     }
 }
 
-void addMethods() {
 
-}
 
 void updateClasses(vector<Class*>* stem, Commit* commit) {
     if(stem->size() == 0) return;
-    int update_class_num = random(10);
+    int update_class_num = random(4);
 
     set<int> update_class_set;
     for(int i = 0; i < update_class_num; i++) { update_class_set.insert(random(0, stem->size() -1)); }
@@ -118,8 +138,11 @@ void updateClasses(vector<Class*>* stem, Commit* commit) {
         }
         Commit* commit_instance = createCommitInstance(commit);
         target->addCommit(commit_instance);
+        addMethods(target, commit);
     }
 }
+
+
 
 void updateMethods() {
 
@@ -193,6 +216,7 @@ void generateCommits(int commitNum, vector<Class*>* stem) {
     }
 
     cout << "Class  : " << stem->size() << " classes" << endl;
+    cout << "Method : " << methodNum << " methods" << endl;
     cout << "Branch : " << branchNum << " [ "; 
     for(int i = 0; i < branchNum; i++) {
         cout << branches[i] << " ";
