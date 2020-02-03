@@ -1,6 +1,6 @@
 .vscode/
 ran
-
+package.json
 data/sample/*.json
 data/sample/*.js
 *.o

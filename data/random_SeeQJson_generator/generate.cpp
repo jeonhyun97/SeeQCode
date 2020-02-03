@@ -127,7 +127,7 @@ void addClasses(vector<Class*>* stem, float progress, Commit* commit) {
     progress = 0.01 > progress ? 0.01: progress;
     int current_percentage = class_percentage(progress) * 100;
     current_percentage = 100 - min(max(current_percentage, 50), 95);
-    if(gambling(current_percentage) && stem->size() < 40) {
+    if(gambling(current_percentage) && stem->size() < 25) {
         if(gambling(15)){
             if(gambling(40)) {
                 addClass(stem, commit);
