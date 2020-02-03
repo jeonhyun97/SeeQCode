@@ -1,8 +1,11 @@
 
 
+function score (info) {
+    return (info.code_smell + info.metric + info.documentation + info.test_coverage) / 4;
+}
 
 
-let width = 1100;
+let width = 1600;
 let height = 500;
 
 let main_svg = d3.selectAll("div")
@@ -15,6 +18,7 @@ let main_svg = d3.selectAll("div")
 
 let classes_history = new Array();
 let commit_history = new Array();
+let authors = new Set();
 
 for(let i = 0; i < SeeQ_data.length; i++) {
     let current_commits = SeeQ_data[i].commits;
@@ -26,40 +30,47 @@ for(let i = 0; i < SeeQ_data.length; i++) {
         commit_history.push({
             class_ind : i,
             commit_ind : j,
+            score : score(current_commits[j].score),
             info : current_commits[j]
         });
+        authors.add(current_commits[j].author);
     }
 }
 
-console.log(classes_history);
+console.log(authors);
+
+let colors = ["#0000FF", "#A52A2A", "#006400", "#8B008B", "#696969", "#DAA520", "#ADD8E6"];
+
+let author2Color = new Map();
+
+let i = 0;
+authors.forEach(e => {
+    author2Color.set(e, colors[i]);
+    i++;
+})
+
+console.log(author2Color);
+
+author2Color.forEach(function(value, key) {
+    console.log(key);
+    console.log(value);
+    var radialGradient = main_svg.append("defs").append("radialGradient").attr("id", "radial-gradient-".concat(key));    
+    radialGradient.append("stop").attr("offset", "0%").attr("stop-color", value);
+    radialGradient.append("stop").attr("offset", "100%").attr("stop-color", "#ffffff");
+})
+
 console.log(commit_history);
-
-
-var colorRange = ['#f5f5f5', '#00ff']
-var color = d3.scaleLinear().range(colorRange).domain([0, 1]);
-
-var radialGradient = main_svg.append("defs")
-        .append("radialGradient")
-        .attr("id", "radial-gradient");
-    
-radialGradient.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", color(1));
-    
-radialGradient.append("stop")
-        .attr("offset", "100%")
-        .attr("stop-color", color(0));
 
 main_svg.selectAll("circle")
         .data(commit_history)
         .join(
             enter => {
                 enter.append("circle")
-                     .attr("cx", d => (d.commit_ind + 1) * 50)
-                     .attr("cy", d => (d.class_ind + 1) * 50)
-                     .attr("r", 15)
+                     .attr("cx", d => (d.commit_ind + 1) * 40)
+                     .attr("cy", d => (d.class_ind + 1) * 40)
+                     .attr("r", d => d.score * 2)
                      .style("opacity", 1.0)
-                     .style("fill", "url(#radial-gradient)");
+                     .attr("fill", d => ("url(#radial-gradient-".concat(d.info.author).concat(")")));
             }
         )
 
