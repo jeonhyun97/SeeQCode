@@ -4,13 +4,15 @@
 
 using namespace std;
 
-Commit :: Commit(string branch, string message, string author, string date, string sha){
+Commit :: Commit(string branch, string message, string author, string date, int commitNum, string sha){
     this->type = "\"commit\"";
     this->branch = "\"" + branch + "\"" ;
     this->message = "\"" + message + "\"";
     this->author = "\"" + author + "\"";
     this->date = "\"" + date + "\"";
+    this->commitNum = to_string(commitNum);
     this->sha = "\"" + sha + "\"";
+
 
 }
 
@@ -20,6 +22,7 @@ Commit :: Commit(Commit& ref) {
     this->message = ref.getMessage();
     this->author = ref.getAuthor();
     this->date = ref.getDate();
+    this->commitNum = ref.getCommitNum();
     this->sha = ref.getSha();
 }
 void Commit :: printJson(string indent){
@@ -33,6 +36,7 @@ void Commit :: printJson(string indent){
     cout << tab << "   \"message\" : " << message << "," << endl;
     cout << tab << "   \"author\" : " << author << "," << endl;
     cout << tab << "   \"date\" : " << date << "," << endl;
+    cout << tab << "   \"num\" : " << commitNum << "," << endl;
     cout << tab << "   \"sha\" : " << sha << "," << endl;
 
     cout << tab << "   \"score\" : {" << endl;

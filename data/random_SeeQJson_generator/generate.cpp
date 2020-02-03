@@ -203,7 +203,7 @@ Commit* newCommit(int branchNum, int authorNum, string* branches, string* author
     string sha = stream.str();
     string message = "(" + date + ") " + "Commit #" + to_string(i) + " ["  + sha + "]" + " done by " + author + " in branch @" + branch;
 
-    return new Commit(branch, message, author, date, sha);
+    return new Commit(branch, message, author, date, i, sha);
 }
 
 

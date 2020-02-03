@@ -5,8 +5,8 @@ function score (info) {
 }
 
 
-let width = 1600;
-let height = 500;
+let width = 16000;
+let height = 1000;
 
 let main_svg = d3.selectAll("div")
                  .append("svg")
@@ -29,7 +29,7 @@ for(let i = 0; i < SeeQ_data.length; i++) {
     for(let j = 0; j < current_commits.length; j++) {
         commit_history.push({
             class_ind : i,
-            commit_ind : j,
+            commit_ind : current_commits[j].num,
             score : score(current_commits[j].score),
             info : current_commits[j]
         });
@@ -66,9 +66,9 @@ main_svg.selectAll("circle")
         .join(
             enter => {
                 enter.append("circle")
-                     .attr("cx", d => (d.commit_ind + 1) * 40)
-                     .attr("cy", d => (d.class_ind + 1) * 40)
-                     .attr("r", d => d.score * 2)
+                     .attr("cx", d => (d.commit_ind + 1) * 20)
+                     .attr("cy", d => (d.class_ind + 1) * 20)
+                     .attr("r", d => d.score * 1.3)
                      .style("opacity", 1.0)
                      .attr("fill", d => ("url(#radial-gradient-".concat(d.info.author).concat(")")));
             }

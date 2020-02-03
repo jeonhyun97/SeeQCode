@@ -13,6 +13,7 @@ private:
     string message;
     string author;
     string date; // ex) 201605131307 : 13 / 05 / 2016  1:07 pm
+    string commitNum;
     string sha;
 
     //score
@@ -22,7 +23,7 @@ private:
     float test_coverage;
 
 public:
-    Commit(string branch, string message, string author, string date, string sha);
+    Commit(string branch, string message, string author, string date, int commitNum, string sha);
     Commit(Commit& ref);
     void printJson(string indent);
     void setScore(float code_smell, float metric, float documentation, float test_coverage);
@@ -32,6 +33,7 @@ public:
     string getMessage() { return message; }
     string getAuthor() { return author; }
     string getDate() { return date; }
+    string getCommitNum() { return commitNum; }
     string getSha() { return sha; }
 
 };
