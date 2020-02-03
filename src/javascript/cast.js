@@ -5,6 +5,8 @@ function score (info) {
 }
 
 
+
+
 let width = 16000;
 let height = 1000;
 
@@ -66,12 +68,116 @@ main_svg.selectAll("circle")
         .join(
             enter => {
                 enter.append("circle")
-                     .attr("cx", d => (d.commit_ind + 1) * 20)
+                     .attr("cx", d => (d.commit_ind + 1) * 12)
                      .attr("cy", d => (d.class_ind + 1) * 20)
-                     .attr("r", d => d.score * 1.3)
+                     .attr("r", d => d.score * 0.8)
                      .style("opacity", 1.0)
                      .attr("fill", d => ("url(#radial-gradient-".concat(d.info.author).concat(")")));
             }
         )
 
 console.log(classes_history);
+
+let test_svg = d3.selectAll("div")
+                 .append("svg")
+                 .attr("width", width)
+                 .attr("height", height);
+
+let commit_history_ziped = new Array();
+let current_i = 0;
+let current_author = commit_history[0].info.author;
+let current_stack = new Array();
+
+for(let i = 0; i < commit_history.length; i++) {
+    if(current_i == commit_history[i].class_ind &&
+       current_author == commit_history[i].info.author) {
+        current_stack.push(commit_history[i]);
+    }
+    else {
+        let j_sum = 0;
+        let score_sum = 0;
+        let cardinality = current_stack.length;
+        while(current_stack.length != 0) {
+            element = current_stack.pop();
+            j_sum += element.commit_ind;
+            score_sum += element.score;
+        }
+        let j_average = j_sum / cardinality;
+        let score_average = Math.sqrt(score_sum);
+        commit_history_ziped.push({
+            class_ind : current_i,
+            commit_ind : j_average,
+            score : score_average,
+            color : author2Color.get(current_author)
+        });
+        current_i = commit_history[i].class_ind;
+        current_author = commit_history[i].info.author;
+        current_stack.push(commit_history[i]);
+    }
+}
+
+
+test_svg.selectAll("circle")
+        .data(commit_history_ziped)
+        .join(
+            enter => {
+                enter.append("circle")
+                     .attr("cx", d => (d.commit_ind + 1) * 6)
+                     .attr("cy", d => (d.class_ind + 1) * 17 + 30)
+                     .attr("r", d => d.score * 6)
+                     .style("opacity", 0.5)
+                     .attr("fill", d => d.color);
+            }
+        )
+
+
+        let test_svg2 = d3.selectAll("div")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+test_svg2.selectAll("circle")
+        .data(commit_history)
+        .join(
+            enter => {
+                enter.append("circle")
+                     .attr("cx", d => (d.commit_ind + 1) * 6)
+                     .attr("cy", d => (d.class_ind + 1) * 17 + 30)
+                     .attr("r", d => d.score * 6)
+                     .style("opacity", 0.5)
+                     .attr("fill", d => author2Color.get(d.info.author));
+            }
+        )
+
+let test_svg3 = d3.selectAll("div")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+test_svg3.selectAll("circle")
+        .data(commit_history)
+        .join(
+            enter => {
+                enter.append("circle")
+                     .attr("cx", d => (d.commit_ind + 1) * 6)
+                     .attr("cy", d => (d.class_ind + 1) * 17 + 30)
+                     .attr("r", d => d.score * 6)
+                     .style("opacity", 0.5)
+                     .attr("fill", d => author2Color.get(d.info.author));
+            }
+        )
+
+test_svg3.selectAll("#circle2")
+        .data(commit_history_ziped)
+        .join(
+            enter => {
+                enter.append("circle")
+                     .attr("id", "circle2")
+                     .attr("cx", d => (d.commit_ind + 1) * 6)
+                     .attr("cy", d => (d.class_ind + 1) * 17 + 30)
+                     .attr("r", d => d.score * 6)
+                     .attr("fill", d => d.color)
+                     .attr("stroke", "black")
+                     .attr("stroke-width", "3");
+            }
+        )
