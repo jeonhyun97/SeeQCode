@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <set>
+#include <vector>
 
 using namespace std;
 
@@ -25,6 +26,8 @@ int current_day = 1;
 
 
 int methodNum = 0; 
+
+vector<Method*> methodSet;
 
 
 int random(int start, int end) { // start <= num <= end
@@ -64,8 +67,29 @@ void addMethods(Class* target, Commit* commit) {
         Method* new_method = new Method("test", "protected");
         new_method->addCommit(commit_instance);
         target->addMethod(new_method);
+        methodSet.push_back(new_method);
     }
     methodNum += new_method_num;
+}
+
+
+
+void updateMethods(Commit* commit) {
+    if (methodSet.size() == 0) return;
+    int method_num = methodSet.size();
+    set<int> update_methods_index;
+    int update_num = random(5);
+
+
+    for(int i = 0; i < update_num; i++) {
+        update_methods_index.insert(random(0, methodSet.size() - 1));
+    }
+
+    set<int> :: iterator iter;
+    for(iter = update_methods_index.begin(); iter != update_methods_index.end(); iter++) {
+        Commit* commit_instance = createCommitInstance(commit);
+        methodSet[*iter]->addCommit(commit_instance);
+    }
 }
 
 
@@ -144,10 +168,6 @@ void updateClasses(vector<Class*>* stem, Commit* commit) {
 
 
 
-void updateMethods() {
-
-}
-
 string getNextDate() {
     string year = to_string(current_year);
     string month = to_string(current_month);
@@ -211,6 +231,7 @@ void generateCommits(int commitNum, vector<Class*>* stem) {
     for(int i = 0; i < commitNum; i++) {
         float progress = (float)i / (float) commitNum;
         Commit* current_commit = newCommit(branchNum, authorNum, branches, authors, i);
+        updateMethods(current_commit);
         updateClasses(stem, current_commit);
         addClasses(stem, progress, current_commit);
     }
