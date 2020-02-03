@@ -10,10 +10,6 @@ function score (info) {
 let width = 16000;
 let height = 1000;
 
-let main_svg = d3.selectAll("div")
-                 .append("svg")
-                 .attr("width", width)
-                 .attr("height", height);
 
 
 // for debugging
@@ -39,7 +35,6 @@ for(let i = 0; i < SeeQ_data.length; i++) {
     }
 }
 
-console.log(authors);
 
 let colors = ["#0000FF", "#A52A2A", "#006400", "#8B008B", "#696969", "#DAA520", "#ADD8E6"];
 
@@ -51,32 +46,6 @@ authors.forEach(e => {
     i++;
 })
 
-console.log(author2Color);
-
-author2Color.forEach(function(value, key) {
-    console.log(key);
-    console.log(value);
-    var radialGradient = main_svg.append("defs").append("radialGradient").attr("id", "radial-gradient-".concat(key));    
-    radialGradient.append("stop").attr("offset", "0%").attr("stop-color", value);
-    radialGradient.append("stop").attr("offset", "100%").attr("stop-color", "#ffffff");
-})
-
-console.log(commit_history);
-
-main_svg.selectAll("circle")
-        .data(commit_history)
-        .join(
-            enter => {
-                enter.append("circle")
-                     .attr("cx", d => (d.commit_ind + 1) * 12)
-                     .attr("cy", d => (d.class_ind + 1) * 20)
-                     .attr("r", d => d.score * 0.8)
-                     .style("opacity", 1.0)
-                     .attr("fill", d => ("url(#radial-gradient-".concat(d.info.author).concat(")")));
-            }
-        )
-
-console.log(classes_history);
 
 let test_svg = d3.selectAll("div")
                  .append("svg")
