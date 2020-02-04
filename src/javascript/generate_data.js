@@ -80,3 +80,4 @@ function generate_class_commit_histories() {
     generate_class_commit_history();
     generate_zipped_class_commit_history();
 }
+

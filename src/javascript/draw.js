@@ -4,6 +4,7 @@
 function draw_main() {
     let test_svg = d3.selectAll("div")
     .append("svg")
+    .attr("id", "main_svg")
     .attr("width", width)
     .attr("height", height);
 
@@ -12,11 +13,14 @@ function draw_main() {
             .join(
                 enter => {
                 enter.append("circle")
+                     .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
                      .attr("cx", d => (d.commit_ind + 1) * 6)
                      .attr("cy", d => (d.class_ind + 1) * 17 + 30)
                      .attr("r", d => d.score * 6)
-                     .style("opacity", 0.5)
-                     .attr("fill", d => d.color);
+                     .style("opacity", 0.4)
+                     .attr("fill", d => d.color)
+                     .on("mouseover", class_commit_hover_over)
+                     .on("mouseout", class_commit_hover_out);
                 }
             );
 
