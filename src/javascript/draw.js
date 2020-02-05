@@ -2,7 +2,7 @@
 
 // drawing main visualization of the program
 function draw_main() {
-    let test_svg = d3.selectAll("div")
+    let test_svg = d3.selectAll("#main")
     .append("svg")
     .attr("id", "main_svg")
     .attr("width", width)
@@ -31,7 +31,7 @@ draw_main();
 
 // temp drawing to test visualization
 function temp() {
-    let test_svg = d3.selectAll("div")
+    let test_svg = d3.selectAll("#main")
             .append("svg")
             .attr("width", width)
             .attr("height", height);

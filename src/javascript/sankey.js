@@ -42,10 +42,9 @@ function zip_sankey_commit_data(current_commits) {
             }
             result.push({
                 "index" : index_sum / size,
-                "score" : score_sum / size,
+                "score" : Math.sqrt(score_sum),
                 "author" : current_author
             })
-
             stack.push(current_commits[i]);
             current_author = current_commits[i].author;
         }
@@ -105,11 +104,78 @@ svg.selectAll("rect")
        }
    );
 
+let curveFunc = d3.area()
+                  .curve(d3.curveBasis)
+                  .x(d => d.x)
+                  .y1(d => d.y1)
+                  .y0(d => d.y0);
 
 
 
-console.log(nodes);
-console.log(links);
+function generateSankeyAreaData() {
+    let data = new Array();
+    let delta = 1/10
+    for(let i = 0; i < nodes.length - 1; i++) {
+        let subArray = new Array();
+        subArray.push({
+            x : nodes[i].x1, 
+            y1 : nodes[i].y0, 
+            y0 : nodes[i].y1
+        });
+        subArray.push({
+            x : (3 * nodes[i].x1 + nodes[i + 1].x0) / 4,
+            y1 : nodes[i].y0 + (nodes[i + 1].y0 - nodes[i].y0) * (1/3 + delta),
+            y0 : nodes[i].y1 + (nodes[i + 1].y1 - nodes[i].y1) * (1/3 + delta),
+        })
+        subArray.push({
+            x : (nodes[i].x1 + 3 * nodes[i + 1].x0) / 4,
+            y1 : nodes[i].y0 + (nodes[i + 1].y0 - nodes[i].y0) * (3/4 - delta),
+            y0 : nodes[i].y1 + (nodes[i + 1].y1 - nodes[i].y1) * (3/4 - delta),
+
+        })
+
+        subArray.push({
+            x : nodes[i + 1].x0,
+            y1 : nodes[i + 1].y0,
+            y0 : nodes[i + 1].y1
+        });
+        data.push(subArray);
+    }
+    return data;
+}
+
+let data = generateSankeyAreaData();
+console.log(data);
+
+svg.selectAll('path')
+   .data(data)
+   .enter()
+   .append('path')
+   .attr('d', d => curveFunc(d))
+   .attr('stroke', 'none')
+   .attr('fill', '#69b3a2');
+
+/*
+let paths = svg.append("g")
+               .attr("fill", "none")
+               .attr("stroke-opacity", 0.4)
+               .selectAll("g")
+               .data(links)
+               .join("g")
+               .style("mix-blend-mode", "multiply");
+
+
+paths.append("path")
+     .attr("d", d3.sankeyLinkHorizontal())
+     .attr("stroke", "black")
+     .attr("stroke-width", function(d, i){
+         console.log(nodes[i].y1 - nodes[i].y0);
+         console.log(nodes[i + 1].y1 - nodes[i + 1].y0);
+         return d.width;
+     });
+     
+*/
+
 
 
 
