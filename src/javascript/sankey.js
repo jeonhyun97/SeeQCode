@@ -7,7 +7,7 @@ let margin = {
 };
 
 let svgWidth = 1000;
-let svgHeight = 480;
+let svgHeight = 780;
 let Width = svgWidth - margin.left - margin.right;
 let Height = svgHeight - margin.top - margin.bottom;
 
@@ -65,20 +65,22 @@ function generate_sankey_data() {
     let nodes = new Array();
     let links = new Array();
 
-    let current_commits = SeeQ_data[0].commits;
-    current_commits = zip_sankey_commit_data(current_commits);
+    for(let ind = 0; ind < SeeQ_data.length; ind++) {
+        let current_commits = SeeQ_data[ind].commits;
+        current_commits = zip_sankey_commit_data(current_commits);
 
-    let class_index = "0_";
-    nodes.push({"id" : class_index + current_commits[0].index+ "_" + current_commits[0].author});
-    for(let i = 1; i < current_commits.length; i++) {
-        let previous_name = class_index + current_commits[i - 1].index + "_" + current_commits[i - 1].author;
-        let current_name = class_index + current_commits[i].index + "_" + current_commits[i].author;
-        nodes.push({"id" : current_name});
-        links.push({
-            "source" : previous_name,
-            "target" : current_name,
-            "value" : current_commits[i-1].score
-        });
+        let class_index = ind + "_";
+        nodes.push({"id" : class_index + current_commits[0].index+ "_" + current_commits[0].author});
+        for(let i = 1; i < current_commits.length; i++) {
+            let previous_name = class_index + current_commits[i - 1].index + "_" + current_commits[i - 1].author;
+            let current_name = class_index + current_commits[i].index + "_" + current_commits[i].author;
+            nodes.push({"id" : current_name});
+            links.push({
+                "source" : previous_name,
+                "target" : current_name,
+                "value" : current_commits[i-1].score
+            });
+        }
     }
     return {nodes, links};
 }
@@ -111,11 +113,22 @@ let curveFunc = d3.area()
                   .y0(d => d.y0);
 
 
+function findClassNum(id) {
+    for(let i = 0; i < id.length; i++) {
+        if(id[i] == "_") return Number(id.slice(0, i));
+    }
+}
+
 
 function generateSankeyAreaData() {
     let data = new Array();
     let delta = 1/10
+    let current_class = findClassNum(nodes[0].id);
     for(let i = 0; i < nodes.length - 1; i++) {
+        if(current_class != findClassNum(nodes[i + 1].id)) {
+            current_class = findClassNum(nodes[i + 1].id);
+            continue;
+        }
         let subArray = new Array();
         subArray.push({
             x : nodes[i].x1, 
