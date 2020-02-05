@@ -1,4 +1,7 @@
 
+function x(d) { return (d.commit_ind + 1) * 13; }
+function y(d) { return (d.class_ind + 1) * 15 + 30}
+function r(d) { return (d.score * 7)}
 
 // drawing main visualization of the program
 function draw_main() {
@@ -14,10 +17,10 @@ function draw_main() {
                 enter => {
                 enter.append("circle")
                      .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
-                     .attr("cx", d => (d.commit_ind + 1) * 6)
-                     .attr("cy", d => (d.class_ind + 1) * 17 + 30)
-                     .attr("r", d => d.score * 6)
-                     .style("opacity", 0.4)
+                     .attr("cx", d => x(d))
+                     .attr("cy", d => y(d))
+                     .attr("r", d => r(d))
+                     .style("opacity", 0.35)
                      .attr("fill", d => d.color)
                      .on("mouseover", class_commit_hover_over)
                      .on("mouseout", class_commit_hover_out);
@@ -36,18 +39,7 @@ function temp() {
             .attr("width", width)
             .attr("height", height);
 
-    test_svg.selectAll("circle")
-            .data(commit_history)
-            .join(
-                enter => {
-                    enter.append("circle")
-                         .attr("cx", d => (d.commit_ind + 1) * 6)
-                         .attr("cy", d => (d.class_ind + 1) * 17 + 30)
-                         .attr("r", d => d.score * 6)
-                         .style("opacity", 0.5)
-                         .attr("fill", d => author2Color.get(d.info.author));
-                }
-            )
+    let ratio = 0.3;
 
         test_svg.selectAll("#circle2")
                 .data(commit_history_zipped)
@@ -55,12 +47,11 @@ function temp() {
                     enter => {
                         enter.append("circle")
                              .attr("id", "circle2")
-                             .attr("cx", d => (d.commit_ind + 1) * 6)
-                             .attr("cy", d => (d.class_ind + 1) * 17 + 30)
-                             .attr("r", d => d.score * 6)
+                             .attr("cx", d => x(d)* ratio)
+                             .attr("cy", d => y(d) * ratio)
+                             .attr("r", d => r(d) * ratio)
+                             .style("opacity", 0.35)
                              .attr("fill", d => d.color)
-                             .attr("stroke", "black")
-                             .attr("stroke-width", "3");
                     }
                 );
 }

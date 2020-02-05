@@ -1,8 +1,7 @@
 // global variables to use
 
 let width = 16000;
-let height = 1000;
-
+let height = 600;
 let classes_history = new Array();
 let commit_history = new Array();
 let authors = new Set();
