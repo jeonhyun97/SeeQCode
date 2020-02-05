@@ -120,7 +120,9 @@ function generateSankeyAreaData() {
         subArray.push({
             x : nodes[i].x1, 
             y1 : nodes[i].y0, 
-            y0 : nodes[i].y1
+            y0 : nodes[i].y1,
+            color : author2Color.get(find_author_name(nodes[i].id)),
+            index : i
         });
         subArray.push({
             x : (3 * nodes[i].x1 + nodes[i + 1].x0) / 4,
@@ -133,11 +135,11 @@ function generateSankeyAreaData() {
             y0 : nodes[i].y1 + (nodes[i + 1].y1 - nodes[i].y1) * (3/4 - delta),
 
         })
-
         subArray.push({
             x : nodes[i + 1].x0,
             y1 : nodes[i + 1].y0,
-            y0 : nodes[i + 1].y1
+            y0 : nodes[i + 1].y1,
+            color : author2Color.get(find_author_name(nodes[i+1].id))
         });
         data.push(subArray);
     }
@@ -149,11 +151,35 @@ console.log(data);
 
 svg.selectAll('path')
    .data(data)
-   .enter()
-   .append('path')
-   .attr('d', d => curveFunc(d))
-   .attr('stroke', 'none')
-   .attr('fill', '#69b3a2');
+   .join(
+       enter => {
+           let gradients = enter.append('defs')
+                                .append('linearGradient')
+                                .attr('id', d => 'gradient' + d[0].index);
+           gradients.append('stop')
+                    .attr('class', 'start')
+                    .attr('offset', '0%')
+                    .attr('stop-color', d => d[0].color);
+
+           gradients.append('stop')
+                    .attr('class', 'start')
+                    .attr('offset', '50%')
+                    .attr('stop-color', d => "#aaaaaa");
+           
+           gradients.append('stop')
+                    .attr('class', 'start')
+                    .attr('offset', '100%')
+                    .attr('stop-color', d => d[3].color);
+            
+           enter.append('path')
+                .attr('d', d => curveFunc(d))
+                .attr('stroke', 'none')
+                .attr('opacity', 0.5)
+                .attr('fill', d => 'url(#gradient' + d[0].index + ")");
+       }
+   )
+
+   
 
 /*
 let paths = svg.append("g")
