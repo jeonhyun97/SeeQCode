@@ -1,5 +1,5 @@
 
-function x(d) { return (d.commit_ind + 1) * 13; }
+function x(d) { return (d.commit_ind + 1) * 15; }
 function y(d) { return (d.class_ind + 1) * 15 + 30}
 function r(d) { return (d.score * 7)}
 
@@ -29,11 +29,7 @@ function draw_main() {
 
 }
 
-generate_class_commit_histories();
-draw_main();
-
-// temp drawing to test visualization
-function temp() {
+function overview() {
     let test_svg = d3.selectAll("#main")
             .append("svg")
             .attr("width", width)
@@ -56,4 +52,10 @@ function temp() {
                 );
 }
 
-temp();
+
+
+generate_class_commit_histories();
+draw_main();
+overview();
+
+// overview visualization
