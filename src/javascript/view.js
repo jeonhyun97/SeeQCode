@@ -66,7 +66,7 @@ function updateSize() {
     viewWidth = size.viewWidth;
     viewHeight = size.viewHeight;
     scrollWidth = size.width;
-    scrollHeight = scrollWidth * 0.1 > 90 ? scrollWidth * 0.1 : 90;
+    scrollHeight = scrollWidth * 0.07 > 70 ? scrollWidth * 0.07 : 70;
     
     scrollView.attr("width", scrollWidth)
               .attr("height", scrollHeight);

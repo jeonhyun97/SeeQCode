@@ -62,15 +62,6 @@ function updateScrollViewRect() {
               .attr("height", scrollHeight)
 }
 
-// window resizing
-
-$(window).resize(function() {
-    updateSize();
-    updateMainViewAxis();
-    updateScrollViewRect();
-})
-          
-
 
 
 

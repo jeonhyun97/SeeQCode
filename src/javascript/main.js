@@ -6,3 +6,5 @@ initSize();
 
 initMainViewAxis();
 initScrollViewRect();
+
+initScrollMoverRect();
