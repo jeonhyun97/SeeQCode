@@ -1,41 +1,48 @@
 
 // variables for main view
 
-let commitNum;
+let axisGTop, axisGBottom;
+let originalScale;
+let currentCommitNum;
 
-let axisTopG, axisBottomG;
-let axisTop, axisBottom;
-
-let scale;
+// variables for scroll View
+let scrollRect;
 
 // setting commit Number (will be revised)
 
-function setCommitNum() {
-    commitNum = 100;        // mock value
+function initCommitNum() {
+    getTotalCommitNum();
+    currentCommitNum = totalCommitNum;
 }
 
 // For main View
 
 function initMainViewAxis() {
-    setCommitNum();
+    initCommitNum();
 
     axisGTop = mainView.append('g')
                        .attr("transform", translate(margin.left, margin.top));
     axisGBottom = mainView.append('g')
                           .attr("transform", translate(margin.left, margin.top + viewHeight));
 
-    scale = d3.scaleLinear()
-              .domain([0, commitNum])
-              .range([0, viewWidth]);
+    originalScale = d3.scaleLinear()
+                      .domain([0, totalCommitNum])
+                      .range([0, viewWidth]);
 
-    axisTop = d3.axisBottom(scale);
-    axisBottom = d3.axisTop(scale);
-    axisGTop.call(axisTop);
-    axisGBottom.call(axisBottom);
+    axisGTop.call(d3.axisBottom(originalScale));
+    axisGBottom.call(d3.axisTop(originalScale));
 }
 
-// variables for scroll View
-let scrollRect;
+function updateMainViewAxis() {
+    let scale = d3.scaleLinear()
+                  .domain([0, currentCommitNum])
+                  .range([0, viewWidth]);
+
+    axisGBottom.attr("transform", translate(margin.left, margin.top + viewHeight));
+    
+    axisGTop.call(d3.axisBottom(scale));
+    axisGBottom.call(d3.axisTop(scale));
+}
 
 // for scroll View
 
@@ -50,7 +57,18 @@ function initScrollViewRect() {
               .style("stroke-width", 1.0);
 }
 
+function updateScrollViewRect() {
+    scrollRect.attr("width", scrollWidth - margin.right - margin.left)
+              .attr("height", scrollHeight)
+}
 
+// window resizing
+
+$(window).resize(function() {
+    updateSize();
+    updateMainViewAxis();
+    updateScrollViewRect();
+})
           
 
 

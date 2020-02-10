@@ -1,3 +1,4 @@
+
 // global variables to use
 
 let width = 16000;
@@ -9,6 +10,9 @@ let colors = ["#0000FF", "#A52A2A", "#006400", "#8B008B", "#696969", "#DAA520", 
 let author2Color = new Map()
 
 let commit_history_zipped = new Array();
+
+let totalCommitNum;
+
 
 // calculate average score
 function score (info) {
@@ -73,6 +77,14 @@ function generate_zipped_class_commit_history() {
             current_stack.push(commit_history[i]);
         }
     }
+}
+
+function getTotalCommitNum() {
+    let max = -1;
+    for(let i = 0; i < commit_history.length; i++) {
+        max = max > commit_history[i].commit_ind ? max : commit_history[i].commit_ind;
+    }
+    totalCommitNum = max;
 }
 
 function generate_class_commit_histories() {

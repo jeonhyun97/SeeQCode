@@ -6,6 +6,10 @@ let scrollView;
 // variables to indicate the size of view
 let viewWidth, viewHeight;
 let scrollWidth, scrollHeight;
+
+let originalViewWidth, originalViewHeight;
+let originalScrollWidth, originalScrollHeight;
+
 let margin = {
     top : 10,
     bottom : 10,
@@ -39,6 +43,7 @@ function calculateSize() {
             parseFloat(containerStyle.paddingRight);
 
     let height = width * 4 / 10;
+    if (height < 350) height = 350;
 
     return { 
         width : width, 
@@ -49,6 +54,10 @@ function calculateSize() {
 }
 
 function initSize() {
+    updateSize();
+}
+
+function updateSize() {
     let size = calculateSize();
 
     mainView.attr("width", size.width)
@@ -57,11 +66,10 @@ function initSize() {
     viewWidth = size.viewWidth;
     viewHeight = size.viewHeight;
     scrollWidth = size.width;
-    scrollHeight = scrollWidth * 0.1;
+    scrollHeight = scrollWidth * 0.1 > 90 ? scrollWidth * 0.1 : 90;
     
     scrollView.attr("width", scrollWidth)
               .attr("height", scrollHeight);
 }
-
 
 
