@@ -7,6 +7,7 @@ let currentCommitNum;
 
 // variables for scroll View
 let scrollRect;
+let scrollRectWidth;
 
 // setting commit Number (will be revised)
 
@@ -49,6 +50,8 @@ function updateMainViewAxis() {
 function initScrollViewRect() {
     scrollRect = scrollView.append("rect");
 
+    scrollRectWidth = scrollWidth - margin.right - margin.left;
+
     scrollRect.attr("width", scrollWidth - margin.right - margin.left)
               .attr("height", scrollHeight)
               .attr("x", margin.left)
@@ -58,7 +61,8 @@ function initScrollViewRect() {
 }
 
 function updateScrollViewRect() {
-    scrollRect.attr("width", scrollWidth - margin.right - margin.left)
+    scrollRectWidth = scrollWidth - margin.right - margin.left;
+    scrollRect.attr("width", scrollRectWidth)
               .attr("height", scrollHeight)
 }
 
