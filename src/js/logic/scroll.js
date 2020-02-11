@@ -41,6 +41,24 @@ function updateScrollMover() {
          .attr("x", moverMargin);
 }
 
+
+function initScrollRect() {
+    let scrollRect = scrollView.append("rect")
+                               .attr("id", "scrollRect");
+
+    scrollRect.attr("width", viewWidth)
+              .attr("height", scrollViewHeight)
+              .attr("x", margin.left)
+              .style("stroke", "gray")
+              .style("fill", "none")
+              .style("stroke-width", 1.0);
+}
+
+function updateScrollRect() {
+    d3.select("#scrollRect").attr("width", viewWidth)
+                            .attr("height", scrollViewHeight)
+}
+
 /* ======================================================= */
 /* =============== END OF PUBLIC FUNCTIONS =============== */
 

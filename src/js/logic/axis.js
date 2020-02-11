@@ -36,26 +36,6 @@ function updateAxis(isWindow) {
                              .attr("transform", translate(margin.left, margin.top + mainViewHeight));
 }
 
-// for scroll View
-
-function initScrollRect() {
-    let scrollRect = scrollView.append("rect")
-                               .attr("id", "scrollRect");
-
-    scrollRect.attr("width", viewWidth)
-              .attr("height", scrollViewHeight)
-              .attr("x", margin.left)
-              .style("stroke", "gray")
-              .style("fill", "none")
-              .style("stroke-width", 1.0);
-}
-
-function updateScrollRect() {
-    d3.select("#scrollRect").attr("width", viewWidth)
-                            .attr("height", scrollViewHeight)
-}
-
-
 /* ======================================================= */
 /* =============== END OF PUBLIC FUNCTIONS =============== */
 

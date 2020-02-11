@@ -16,8 +16,6 @@ function initData() {
 /* =================== HELPER FUNCTIONS ================== */
 /* ======================================================= */
 
-
-
 // calculate average score. this will be changed...
 function mockScore (info) { return (info.code_smell + info.metric + info.documentation + info.test_coverage) / 4; }
 
