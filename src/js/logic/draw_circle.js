@@ -1,30 +1,12 @@
+/* =================== PUBLIC FUNCTIONS ================== */
+/* ======================================================= */
 
-function x(d) { return commitScale(d.commit_ind) + margin.left }
-function y(d) { return classScale(d.class_ind) + margin.top }
-function r(d) { return (d.score * 7)}
-
-
-// variables for drawing circles which denote contribution
-
-let mainCircleView;
-let scrollCircleView;
-
-function filterCommitHistory() {
-    let filterRange = [scrollMoverRange[0] - 5, scrollMoverRange[1] + 5]
-    let filteredCommitHistory = commit_history_zipped.filter(function(d) {
-        return d.commit_ind > filterRange[0] && d.commit_ind < filterRange[1];
-    });
-    return filteredCommitHistory;
-}
-
-function initMainViewCircles() {
+function initMainCircles() {
     mainCircleView = mainView.append("g")
                              .attr("id", "mainCircleView");
 
-    let filteredCommitHistory = filterCommitHistory();
-
     mainCircleView.selectAll("circle")
-                  .data(filteredCommitHistory, d => d.sha + d.color + d.score)
+                  .data(filterCommitHistory(), d => d.sha + d.color + d.score)
                   .join(
                       enter => {
                           enter.append("circle")
@@ -32,22 +14,18 @@ function initMainViewCircles() {
                                .attr("cx", d => x(d))
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
-                               .style("opacity", 0.35)
                                .attr("fill", d => d.color)
+                               .style("opacity", 0.35)
                                .on("mouseover", class_commit_hover_over)
                                .on("mouseout", class_commit_hover_out);
-
                       }
-                  )
-    
+                  );
 }
 
-function updateMainViewCircles() {
-
-    let filteredCommitHistory = filterCommitHistory();
+function updateMainCircles() {
 
     mainCircleView.selectAll("circle")
-                  .data(filteredCommitHistory, d => d.sha + d.color + d.score)
+                  .data(filterCommitHistory(), d => d.sha + d.color + d.score)
                   .join(
                       enter => {
                           enter.append("circle")
@@ -55,8 +33,8 @@ function updateMainViewCircles() {
                                .attr("cx", d => x(d))
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
-                               .style("opacity", 0.35)
                                .attr("fill", d => d.color)
+                               .style("opacity", 0.35)
                                .on("mouseover", class_commit_hover_over)
                                .on("mouseout", class_commit_hover_out);
                       },
@@ -68,20 +46,19 @@ function updateMainViewCircles() {
                   )
 }
 
-function initScrollViewCircles() {
+function initScrollCircles() {
     scrollCircleView = scrollView.append("g")
                                  .attr("id", "scrollCircleView");
     
     let scrollViewCommitScale = d3.scaleLinear()
                                   .domain([0, totalCommitNum])
                                   .range([0, viewWidth])
-    let scrollViewClassScale = d3.scaleLinear()
-                                 .domain([-3, totalClassNum + 3])
-                                 .range([0, d3.select("#scrollView").node().getBBox().height]);
+    let scrollViewClassScale  = d3.scaleLinear()
+                                  .domain([-3, totalClassNum + 3])
+                                  .range([0, d3.select("#scrollView").node().getBBox().height]);
 
-    
     scrollCircleView.selectAll("circle")
-                    .data(commit_history_zipped)
+                    .data(commitHistoryZipped)
                     .join(
                         enter => {
                             enter.append("circle")
@@ -89,14 +66,13 @@ function initScrollViewCircles() {
                                  .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
                                  .attr("cy", d => scrollViewClassScale(d.class_ind))
                                  .attr("r", d => r(d) / 8)
-                                 .style("opacity", 0.35)
-                                 .attr("fill", d => d.color);
+                                 .attr("fill", d => d.color)
+                                 .style("opacity", 0.35);
                         }
                     )
-
 }
 
-function updateScrollViewCircles() {
+function updateScrollCircles() {
 
     let scrollViewCommitScale = d3.scaleLinear()
                                   .domain([0, totalCommitNum])
@@ -105,11 +81,28 @@ function updateScrollViewCircles() {
                                  .domain([-3, totalClassNum + 3])
                                  .range([0, d3.select("#scrollView").node().getBBox().height]);
 
-    
     scrollCircleView.selectAll("circle")
                     .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
                     .attr("cy", d => scrollViewClassScale(d.class_ind))
                     .attr("r", d => r(d) / 8);
 
-    
 }
+
+/* ======================================================= */
+/* =============== END OF PUBLIC FUNCTIONS =============== */
+
+
+/* =================== HELPER FUNCTIONS ================== */
+/* ======================================================= */
+
+
+function filterCommitHistory() {
+    let filterRange = [scrollMoverRange[0] - 5, scrollMoverRange[1] + 5]
+    let filteredCommitHistory = commitHistoryZipped.filter(function(d) {
+        return d.commit_ind > filterRange[0] && d.commit_ind < filterRange[1];
+    });
+    return filteredCommitHistory;
+}
+
+/* ======================================================= */
+/* =============== END OF HELPER FUNCTIONS =============== */

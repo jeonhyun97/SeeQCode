@@ -1,23 +1,8 @@
-// variables for view cast
-let mainView;
-let scrollView;
 
-// variables to indicate the size of view
-let viewWidth, viewHeight;
-let scrollWidth, scrollHeight;
+/* =================== PUBLIC FUNCTIONS ================== */
+/* ======================================================= */
 
-let originalViewWidth, originalViewHeight;
-let originalScrollWidth, originalScrollHeight;
-
-let margin = {
-    top : 10,
-    bottom : 10,
-    left : 20,
-    right : 20
-};
-
-
-function initViewContainers() {
+function initView() {
     let program = d3.select("#program");
 
     mainView = program.append("div")
@@ -29,11 +14,31 @@ function initViewContainers() {
                         .attr("id", "scrollViewDiv")
                         .append("svg")
                         .attr("id", "scrollView");
+                        
+    updateSize();
 }
 
+function updateSize() {
+    let size = calculateSize();
+
+    mainView.attr("width", size.width)
+            .attr("height", size.height);
+    
+    viewWidth = size.viewWidth;
+    mainViewHeight = size.viewHeight;
+    scrollViewHeight = size.width * 0.07 > 70 ? size.width * 0.07 : 70;
+    
+    scrollView.attr("width", size.width)
+              .attr("height", scrollViewHeight);
+}
+
+/* ======================================================= */
+/* =============== END OF PUBLIC FUNCTIONS =============== */
+
+/* =================== HELPER FUNCTION ================== */
+/* ======================================================= */
 
 function calculateSize() {
-
     let containerElement = document.getElementById("main_container");
     let containerStyle = getComputedStyle(containerElement);
 
@@ -52,23 +57,8 @@ function calculateSize() {
     };
 }
 
-function initSize() {
-    updateSize();
-}
+/* ======================================================= */
+/* =============== END OF HELPER FUNCTION =============== */
 
-function updateSize() {
-    let size = calculateSize();
-
-    mainView.attr("width", size.width)
-            .attr("height", size.height);
-    
-    viewWidth = size.viewWidth;
-    viewHeight = size.viewHeight;
-    scrollWidth = size.width;
-    scrollHeight = scrollWidth * 0.07 > 70 ? scrollWidth * 0.07 : 70;
-    
-    scrollView.attr("width", scrollWidth)
-              .attr("height", scrollHeight);
-}
 
 

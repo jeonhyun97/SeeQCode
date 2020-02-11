@@ -1,84 +1,81 @@
+/* =================== PUBLIC FUNCTIONS ================== */
+/* ======================================================= */
 
-// variables for main view
+function initAxis() {
 
-let axisGTop, axisGBottom;
-let scrollMoverRange;
-
-// variables for scroll View
-let scrollRect;
-let scrollRectWidth;
-
-// scale variables ( x, y direction )
-let commitScale;    // x axis
-let classScale;     // y axis
-
-
-// For main View
-
-function updateScrollMoverRange() {
-    let start = d3.select("#scrollRectMover").node().getBBox().x - margin.left;
-    let end = start + d3.select("#scrollRectMover").node().getBBox().width;
-
-    scrollMoverRange = [start * totalCommitNum / scrollRectWidth, end * totalCommitNum / scrollRectWidth];
-}
-
-function updateClassRange() {
-    classScale = d3.scaleLinear()
-                   .domain([-3, totalClassNum + 3])
-                   .range([0, viewHeight]);
-}
-
-function initMainViewAxis() {
-
-    axisGTop = mainView.append('g')
-                       .attr("transform", translate(margin.left, margin.top));
-    axisGBottom = mainView.append('g')
-                          .attr("transform", translate(margin.left, margin.top + viewHeight));
+    let axisGTop = mainView.append('g')
+                           .attr("id", "top_axis")
+                           .attr("transform", translate(margin.left, margin.top));
+    let axisGBottom = mainView.append('g')
+                              .attr("id", "bottom_axis")
+                              .attr("transform", translate(margin.left, margin.top + mainViewHeight));
 
     updateScrollMoverRange();
+    updateClassRange();
     
     commitScale = d3.scaleLinear()
                       .domain(scrollMoverRange)
                       .range([0, viewWidth]);
 
-    updateClassRange();
     axisGTop.call(d3.axisBottom(commitScale));
     axisGBottom.call(d3.axisTop(commitScale));
 }
 
-function updateMainViewAxis() {
+function updateAxis(isWindow) {
+
+    if(!isWindow) updateScrollMoverRange();
+    else updateClassRange();
+
     commitScale = d3.scaleLinear()
                   .domain(scrollMoverRange)
                   .range([0, viewWidth]);
-
-    axisGBottom.attr("transform", translate(margin.left, margin.top + viewHeight));
     
-    axisGTop.call(d3.axisBottom(commitScale));
-    axisGBottom.call(d3.axisTop(commitScale));
+    
+    d3.select("#top_axis").call(d3.axisBottom(commitScale));
+    d3.select("#bottom_axis").call(d3.axisTop(commitScale))
+                             .attr("transform", translate(margin.left, margin.top + mainViewHeight));
 }
 
 // for scroll View
 
-function initScrollViewRect() {
-    scrollRect = scrollView.append("rect");
+function initScrollRect() {
+    let scrollRect = scrollView.append("rect")
+                               .attr("id", "scrollRect");
 
-    scrollRectWidth = scrollWidth - margin.right - margin.left;
-
-    scrollRect.attr("width", scrollWidth - margin.right - margin.left)
-              .attr("height", scrollHeight)
+    scrollRect.attr("width", viewWidth)
+              .attr("height", scrollViewHeight)
               .attr("x", margin.left)
               .style("stroke", "gray")
               .style("fill", "none")
               .style("stroke-width", 1.0);
 }
 
-function updateScrollViewRect() {
-    scrollRectWidth = scrollWidth - margin.right - margin.left;
-    scrollRect.attr("width", scrollRectWidth)
-              .attr("height", scrollHeight)
+function updateScrollRect() {
+    d3.select("#scrollRect").attr("width", viewWidth)
+                            .attr("height", scrollViewHeight)
 }
 
 
+/* ======================================================= */
+/* =============== END OF PUBLIC FUNCTIONS =============== */
 
 
+/* =================== HELPER FUNCTIONS ================== */
+/* ======================================================= */
+
+
+function updateScrollMoverRange() {
+    let start = d3.select("#scrollRectMover").node().getBBox().x - margin.left;
+    let end = start + d3.select("#scrollRectMover").node().getBBox().width;
+
+    scrollMoverRange = [start * totalCommitNum / viewWidth, end * totalCommitNum / viewWidth];
+}
+
+function updateClassRange() {
+    classScale = d3.scaleLinear()
+                   .domain([-3, totalClassNum + 3])
+                   .range([0, mainViewHeight]);
+}
               
+/* ======================================================= */
+/* =============== END OF HELPER FUNCTIONS =============== */
