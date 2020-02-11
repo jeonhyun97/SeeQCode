@@ -33,10 +33,9 @@ function initMainViewCircles() {
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
                                .style("opacity", 0.35)
-                               .attr("fill", d => d.color);
-                               //.on("mouseover", class_commit_hover_over)
-                               //.on("mouseout", class_commit_hover_out);
-                               // hovering: after...
+                               .attr("fill", d => d.color)
+                               .on("mouseover", class_commit_hover_over)
+                               .on("mouseout", class_commit_hover_out);
 
                       }
                   )
@@ -57,7 +56,9 @@ function updateMainViewCircles() {
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
                                .style("opacity", 0.35)
-                               .attr("fill", d => d.color);
+                               .attr("fill", d => d.color)
+                               .on("mouseover", class_commit_hover_over)
+                               .on("mouseout", class_commit_hover_out);
                       },
                       update => {
                           update.attr("cx", d => x(d))
@@ -84,6 +85,7 @@ function initScrollViewCircles() {
                     .join(
                         enter => {
                             enter.append("circle")
+                                 .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
                                  .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
                                  .attr("cy", d => scrollViewClassScale(d.class_ind))
                                  .attr("r", d => r(d) / 8)
