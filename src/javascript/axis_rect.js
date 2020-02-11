@@ -30,7 +30,7 @@ function updateScrollMoverRange() {
 
 function updateClassRange() {
     classScale = d3.scaleLinear()
-                   .domain([-3, totalClassNum + 2])
+                   .domain([-3, totalClassNum + 3])
                    .range([0, viewHeight]);
 }
 

@@ -9,12 +9,22 @@ function r(d) { return (d.score * 7)}
 let mainCircleView;
 let scrollCircleView;
 
+function filterCommitHistory() {
+    let filterRange = [scrollMoverRange[0] - 5, scrollMoverRange[1] + 5]
+    let filteredCommitHistory = commit_history_zipped.filter(function(d) {
+        return d.commit_ind > filterRange[0] && d.commit_ind < filterRange[1];
+    });
+    return filteredCommitHistory;
+}
+
 function initMainViewCircles() {
     mainCircleView = mainView.append("g")
                              .attr("id", "mainCircleView");
 
+    let filteredCommitHistory = filterCommitHistory();
+
     mainCircleView.selectAll("circle")
-                  .data(commit_history_zipped)
+                  .data(filteredCommitHistory, d => d.sha)
                   .join(
                       enter => {
                           enter.append("circle")
@@ -34,10 +44,27 @@ function initMainViewCircles() {
 }
 
 function updateMainViewCircles() {
-    mainCircleView.selectAll("circle")
-                  .attr("cx", d => x(d))
-                  .attr("cy", d => y(d))
 
+    let filteredCommitHistory = filterCommitHistory();
+
+    mainCircleView.selectAll("circle")
+                  .data(filteredCommitHistory, d => d.sha)
+                  .join(
+                      enter => {
+                          enter.append("circle")
+                               .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
+                               .attr("cx", d => x(d))
+                               .attr("cy", d => y(d))
+                               .attr("r", d => r(d))
+                               .style("opacity", 0.35)
+                               .attr("fill", d => d.color);
+                      },
+                      update => {
+                          update.attr("cx", d => x(d))
+                                .attr("cy", d => y(d));
+                      },
+                      exit => { exit.remove(); }
+                  )
 }
 
 function initScrollViewCircles() {

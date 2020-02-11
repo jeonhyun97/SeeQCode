@@ -60,10 +60,12 @@ function generate_zipped_class_commit_history() {
             let j_sum = 0;
             let score_sum = 0;
             let cardinality = current_stack.length;
+            let shaSum = "";
             while(current_stack.length != 0) {
                 element = current_stack.pop();
                 j_sum += element.commit_ind;
                 score_sum += element.score;
+                shaSum += element.sha;
             }
             let j_average = j_sum / cardinality;
             let score_average = Math.sqrt(score_sum);
@@ -71,6 +73,7 @@ function generate_zipped_class_commit_history() {
                 class_ind : current_i,
                 commit_ind : j_average,
                 score : score_average,
+                sha : shaSum,
                 color : author2Color.get(current_author)
             });
             current_i = commit_history[i].class_ind;
