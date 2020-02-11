@@ -21,6 +21,7 @@ function initScrollMoverRect() {
     moverCenterRatio = (moverWidth * 0.5) / scrollRectWidth;
 
     mover = scrollView.append("rect")
+                      .attr("id", "scrollRectMover")
                       .attr("width", moverWidth)
                       .attr("height", moverHeight)
                       .attr("x", currentMoverMargin)
@@ -43,6 +44,9 @@ function addMoverDragAction() {
             else 
                 d3.select(this).attr("x", x);
             currentMoverMargin = d3.select(this).node().getBBox().x;
+            
+            updateScrollMoverRange();
+            updateMainViewAxis();
         })
         .on("start", function() {
             currentDraggingOffset = d3.event.x - d3.select(this).node().getBBox().x;
@@ -84,6 +88,9 @@ function addMoverZoomAction() {
                 d3.select(this).attr("width", tempWidth)
                                .attr("x", tempMoverMargin);
             }
+            updateScrollMoverRange();
+            updateMainViewAxis();
+
         })
        .on("start", function() {
            d3.select(this).attr("opacity", 0.4);

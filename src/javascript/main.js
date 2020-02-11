@@ -4,7 +4,7 @@ generate_class_commit_histories();
 setView();
 initSize();
 
-initMainViewAxis();
 initScrollViewRect();
-
 initScrollMoverRect();
+initMainViewAxis();
+

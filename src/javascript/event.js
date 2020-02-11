@@ -2,8 +2,8 @@
 
 $(window).resize(function() {
     updateSize();
-    updateMainViewAxis();
     updateScrollViewRect();
     updateScrollMoverRect();
+    updateMainViewAxis();
 })
           

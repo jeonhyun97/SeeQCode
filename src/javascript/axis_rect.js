@@ -2,8 +2,9 @@
 // variables for main view
 
 let axisGTop, axisGBottom;
-let originalScale;
 let currentCommitNum;
+let currentScale;
+let scrollMoverRange;
 
 // variables for scroll View
 let scrollRect;
@@ -18,6 +19,13 @@ function initCommitNum() {
 
 // For main View
 
+function updateScrollMoverRange() {
+    let start = d3.select("#scrollRectMover").node().getBBox().x - margin.left;
+    let end = start + d3.select("#scrollRectMover").node().getBBox().width;
+
+    scrollMoverRange = [start * totalCommitNum / scrollRectWidth, end * totalCommitNum / scrollRectWidth];
+}
+
 function initMainViewAxis() {
     initCommitNum();
 
@@ -26,17 +34,19 @@ function initMainViewAxis() {
     axisGBottom = mainView.append('g')
                           .attr("transform", translate(margin.left, margin.top + viewHeight));
 
-    originalScale = d3.scaleLinear()
-                      .domain([0, totalCommitNum])
+    updateScrollMoverRange();
+    
+    let scale = d3.scaleLinear()
+                      .domain(scrollMoverRange)
                       .range([0, viewWidth]);
 
-    axisGTop.call(d3.axisBottom(originalScale));
-    axisGBottom.call(d3.axisTop(originalScale));
+    axisGTop.call(d3.axisBottom(scale));
+    axisGBottom.call(d3.axisTop(scale));
 }
 
 function updateMainViewAxis() {
     let scale = d3.scaleLinear()
-                  .domain([0, currentCommitNum])
+                  .domain(scrollMoverRange)
                   .range([0, viewWidth]);
 
     axisGBottom.attr("transform", translate(margin.left, margin.top + viewHeight));
