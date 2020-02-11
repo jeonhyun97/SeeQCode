@@ -2,7 +2,6 @@
 // variables for main view
 
 let axisGTop, axisGBottom;
-let currentCommitNum;
 let scrollMoverRange;
 
 // variables for scroll View
@@ -13,11 +12,6 @@ let scrollRectWidth;
 let commitScale;    // x axis
 let classScale;     // y axis
 
-function calculateBasicInfos() {
-    getTotalCommitNum();
-    getTotalClassNum();
-    currentCommitNum = totalCommitNum;
-}
 
 // For main View
 
@@ -35,7 +29,6 @@ function updateClassRange() {
 }
 
 function initMainViewAxis() {
-    calculateBasicInfos();
 
     axisGTop = mainView.append('g')
                        .attr("transform", translate(margin.left, margin.top));

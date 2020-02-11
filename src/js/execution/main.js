@@ -1,5 +1,6 @@
-// main function calls of the program
-generate_class_commit_histories();
+// generate basic data drived from a SeeQJson data
+generateClassCommitHistories();
+calculateBasicInfos();
 
 initViewContainers();
 initSize();

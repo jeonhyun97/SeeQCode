@@ -1,5 +1,4 @@
 // variables for view cast
-let program;
 let mainView;
 let scrollView;
 
@@ -19,7 +18,7 @@ let margin = {
 
 
 function initViewContainers() {
-    program = d3.select("#program");
+    let program = d3.select("#program");
 
     mainView = program.append("div")
                        .attr("id", "mainViewDiv")

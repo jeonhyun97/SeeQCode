@@ -1,5 +1,4 @@
 // window resizing
-
 $(window).resize(function() {
     updateSize();
     updateScrollViewRect();
@@ -10,7 +9,7 @@ $(window).resize(function() {
     updateScrollViewCircles();
 })
           
-
+// window scrolling
 $(function() {
     $("#to_top").hide();
     $(window).scroll(function(){
