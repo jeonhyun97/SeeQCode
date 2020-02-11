@@ -3,17 +3,19 @@
 
 let axisGTop, axisGBottom;
 let currentCommitNum;
-let currentScale;
 let scrollMoverRange;
 
 // variables for scroll View
 let scrollRect;
 let scrollRectWidth;
 
-// setting commit Number (will be revised)
+// scale variables ( x, y direction )
+let commitScale;    // x axis
+let classScale;     // y axis
 
-function initCommitNum() {
+function calculateBasicInfos() {
     getTotalCommitNum();
+    getTotalClassNum();
     currentCommitNum = totalCommitNum;
 }
 
@@ -26,8 +28,14 @@ function updateScrollMoverRange() {
     scrollMoverRange = [start * totalCommitNum / scrollRectWidth, end * totalCommitNum / scrollRectWidth];
 }
 
+function updateClassRange() {
+    classScale = d3.scaleLinear()
+                   .domain([-3, totalClassNum + 2])
+                   .range([0, viewHeight]);
+}
+
 function initMainViewAxis() {
-    initCommitNum();
+    calculateBasicInfos();
 
     axisGTop = mainView.append('g')
                        .attr("transform", translate(margin.left, margin.top));
@@ -36,23 +44,24 @@ function initMainViewAxis() {
 
     updateScrollMoverRange();
     
-    let scale = d3.scaleLinear()
+    commitScale = d3.scaleLinear()
                       .domain(scrollMoverRange)
                       .range([0, viewWidth]);
 
-    axisGTop.call(d3.axisBottom(scale));
-    axisGBottom.call(d3.axisTop(scale));
+    updateClassRange();
+    axisGTop.call(d3.axisBottom(commitScale));
+    axisGBottom.call(d3.axisTop(commitScale));
 }
 
 function updateMainViewAxis() {
-    let scale = d3.scaleLinear()
+    commitScale = d3.scaleLinear()
                   .domain(scrollMoverRange)
                   .range([0, viewWidth]);
 
     axisGBottom.attr("transform", translate(margin.left, margin.top + viewHeight));
     
-    axisGTop.call(d3.axisBottom(scale));
-    axisGBottom.call(d3.axisTop(scale));
+    axisGTop.call(d3.axisBottom(commitScale));
+    axisGBottom.call(d3.axisTop(commitScale));
 }
 
 // for scroll View

@@ -18,7 +18,7 @@ let margin = {
 };
 
 
-function setView() {
+function initViewContainers() {
     program = d3.select("#program");
 
     mainView = program.append("div")

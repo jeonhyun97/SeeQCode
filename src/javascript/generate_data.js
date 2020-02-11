@@ -12,6 +12,7 @@ let author2Color = new Map()
 let commit_history_zipped = new Array();
 
 let totalCommitNum;
+let totalClassNum;
 
 
 // calculate average score
@@ -85,6 +86,15 @@ function getTotalCommitNum() {
         max = max > commit_history[i].commit_ind ? max : commit_history[i].commit_ind;
     }
     totalCommitNum = max;
+}
+
+function getTotalClassNum() {
+    let max = -1;
+    for(let i = 0; i < commit_history.length; i++) {
+        max = max > commit_history[i].class_ind ? max : commit_history[i].class_ind;
+    }
+    totalClassNum = max;
+
 }
 
 function generate_class_commit_histories() {

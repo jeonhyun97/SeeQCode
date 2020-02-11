@@ -47,6 +47,7 @@ function addMoverDragAction() {
             
             updateScrollMoverRange();
             updateMainViewAxis();
+            updateMainViewCircles();
         })
         .on("start", function() {
             currentDraggingOffset = d3.event.x - d3.select(this).node().getBBox().x;
@@ -90,6 +91,7 @@ function addMoverZoomAction() {
             }
             updateScrollMoverRange();
             updateMainViewAxis();
+            updateMainViewCircles();
 
         })
        .on("start", function() {

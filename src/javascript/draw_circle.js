@@ -1,7 +1,79 @@
 
-function x(d) { return (d.commit_ind + 1) * 15; }
-function y(d) { return (d.class_ind + 1) * 15 + 30}
+function x(d) { return commitScale(d.commit_ind) + margin.left }
+function y(d) { return classScale(d.class_ind) + margin.top }
 function r(d) { return (d.score * 7)}
+
+
+// variables for drawing circles which denote contribution
+
+let mainCircleView;
+let scrollCircleView;
+
+function initMainViewCircles() {
+    mainCircleView = mainView.append("g")
+                             .attr("id", "mainCircleView");
+
+    mainCircleView.selectAll("circle")
+                  .data(commit_history_zipped)
+                  .join(
+                      enter => {
+                          enter.append("circle")
+                               .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
+                               .attr("cx", d => x(d))
+                               .attr("cy", d => y(d))
+                               .attr("r", d => r(d))
+                               .style("opacity", 0.35)
+                               .attr("fill", d => d.color);
+                               //.on("mouseover", class_commit_hover_over)
+                               //.on("mouseout", class_commit_hover_out);
+                               // hovering: after...
+
+                      }
+                  )
+    
+}
+
+function updateMainViewCircles() {
+    mainCircleView.selectAll("circle")
+                  .attr("cx", d => x(d))
+                  .attr("cy", d => y(d))
+
+}
+
+function initScrollViewCircles() {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // drawing main visualization of the program
 function draw_main() {
@@ -29,6 +101,8 @@ function draw_main() {
 
 }
 
+// overview visualization
+
 function overview() {
     let test_svg = d3.selectAll("#main")
             .append("svg")
@@ -53,9 +127,3 @@ function overview() {
 }
 
 
-
-generate_class_commit_histories();
-draw_main();
-overview();
-
-// overview visualization

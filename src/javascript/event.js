@@ -5,5 +5,7 @@ $(window).resize(function() {
     updateScrollViewRect();
     updateScrollMoverRect();
     updateMainViewAxis();
+    updateClassRange();
+    updateMainViewCircles();
 })
           
