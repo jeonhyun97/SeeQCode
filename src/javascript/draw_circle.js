@@ -24,7 +24,7 @@ function initMainViewCircles() {
     let filteredCommitHistory = filterCommitHistory();
 
     mainCircleView.selectAll("circle")
-                  .data(filteredCommitHistory, d => d.sha)
+                  .data(filteredCommitHistory, d => d.sha + d.color)
                   .join(
                       enter => {
                           enter.append("circle")
@@ -47,7 +47,7 @@ function updateMainViewCircles() {
     let filteredCommitHistory = filterCommitHistory();
 
     mainCircleView.selectAll("circle")
-                  .data(filteredCommitHistory, d => d.sha)
+                  .data(filteredCommitHistory, d => d.sha + d.color)
                   .join(
                       enter => {
                           enter.append("circle")
