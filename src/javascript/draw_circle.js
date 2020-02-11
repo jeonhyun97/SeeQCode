@@ -68,89 +68,46 @@ function updateMainViewCircles() {
 }
 
 function initScrollViewCircles() {
+    scrollCircleView = scrollView.append("g")
+                                 .attr("id", "scrollCircleView");
+    
+    let scrollViewCommitScale = d3.scaleLinear()
+                                  .domain([0, totalCommitNum])
+                                  .range([0, viewWidth])
+    let scrollViewClassScale = d3.scaleLinear()
+                                 .domain([-3, totalClassNum + 3])
+                                 .range([0, d3.select("#scrollView").node().getBBox().height]);
+
+    
+    scrollCircleView.selectAll("circle")
+                    .data(commit_history_zipped)
+                    .join(
+                        enter => {
+                            enter.append("circle")
+                                 .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
+                                 .attr("cy", d => scrollViewClassScale(d.class_ind))
+                                 .attr("r", d => r(d) / 8)
+                                 .style("opacity", 0.35)
+                                 .attr("fill", d => d.color);
+                        }
+                    )
 
 }
 
+function updateScrollViewCircles() {
 
+    let scrollViewCommitScale = d3.scaleLinear()
+                                  .domain([0, totalCommitNum])
+                                  .range([0, viewWidth])
+    let scrollViewClassScale = d3.scaleLinear()
+                                 .domain([-3, totalClassNum + 3])
+                                 .range([0, d3.select("#scrollView").node().getBBox().height]);
 
+    
+    scrollCircleView.selectAll("circle")
+                    .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
+                    .attr("cy", d => scrollViewClassScale(d.class_ind))
+                    .attr("r", d => r(d) / 8);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// drawing main visualization of the program
-function draw_main() {
-    let test_svg = d3.selectAll("#main")
-    .append("svg")
-    .attr("id", "main_svg")
-    .attr("width", width)
-    .attr("height", height);
-
-    test_svg.selectAll("circle")
-            .data(commit_history_zipped)
-            .join(
-                enter => {
-                enter.append("circle")
-                     .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
-                     .attr("cx", d => x(d))
-                     .attr("cy", d => y(d))
-                     .attr("r", d => r(d))
-                     .style("opacity", 0.35)
-                     .attr("fill", d => d.color)
-                     .on("mouseover", class_commit_hover_over)
-                     .on("mouseout", class_commit_hover_out);
-                }
-            );
-
+    
 }
-
-// overview visualization
-
-function overview() {
-    let test_svg = d3.selectAll("#main")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height);
-
-    let ratio = 0.3;
-
-        test_svg.selectAll("#circle2")
-                .data(commit_history_zipped)
-                .join(
-                    enter => {
-                        enter.append("circle")
-                             .attr("id", "circle2")
-                             .attr("cx", d => x(d)* ratio)
-                             .attr("cy", d => y(d) * ratio)
-                             .attr("r", d => r(d) * ratio)
-                             .style("opacity", 0.35)
-                             .attr("fill", d => d.color)
-                    }
-                );
-}
-
-
