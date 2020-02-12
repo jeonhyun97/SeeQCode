@@ -5,6 +5,9 @@ function initMainCircles() {
     mainCircleView = mainView.append("g")
                              .attr("id", "mainCircleView");
 
+    mainUnzippedView = mainView.append("g")
+                               .attr("id", "mainUnzippedView");
+
     mainCircleView.selectAll("circle")
                   .data(filterCommitHistory(), d => d.sha)
                   .join(
@@ -24,6 +27,9 @@ function initMainCircles() {
 }
 
 function updateMainCircles() {
+    let defaultOpacity;
+    if(clickedClassNum > 0) defaultOpacity = 0.18
+    else defaultOpacity = 0.3
 
     mainCircleView.selectAll("circle")
                   .data(filterCommitHistory(), d => d.sha)
@@ -35,7 +41,7 @@ function updateMainCircles() {
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
                                .attr("fill", d => d.color)
-                               .style("opacity", 0.3)
+                               .style("opacity", 0.18)
                                .on("mouseover", classCommitHoverOver)
                                .on("mouseout", classCommitHoverOut)
                                .on("click", classCommitClick);
@@ -46,12 +52,17 @@ function updateMainCircles() {
                       },
                       exit => { exit.remove(); }
                   )
+    updateUnzippedMainCircles();
 }
 
 function initScrollCircles() {
     scrollCircleView = scrollView.append("g")
                                  .attr("id", "scrollCircleView");
+
+    scrollUnzippedView = scrollView.append("g")
+                                   .attr("id", "scrollUnzippedView");
     
+
     scrollViewCommitScale = d3.scaleLinear()
                                   .domain([0, totalCommitNum])
                                   .range([0, viewWidth])
@@ -87,6 +98,8 @@ function updateScrollCircles() {
                     .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
                     .attr("cy", d => scrollViewClassScale(d.class_ind))
                     .attr("r", d => r(d) / 8);
+    
+    updateUnzippedScrollCircles();
 
 }
 

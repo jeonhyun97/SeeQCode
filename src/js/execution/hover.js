@@ -4,6 +4,7 @@ let clickedClassNum = 0;
 // number of the transitions that should not be disturbed
 let inTransition = 0;
 
+
 function classCommitHoverOver(d, i) {
     if(clickedClassNum == 0) {
         mainView.selectAll("circle")
@@ -43,6 +44,8 @@ function unzippedClassCommitHoverOver(d, i) {
       .transition()
       .duration(100)
       .style("opacity", 1.0);
+    
+      d3.selectAll(".unzipped_class_ind_".concat(d.zipped.class_ind.toString())).raise();
 
 }
 
@@ -56,20 +59,21 @@ function unzippedClassCommitHoverOut(d, i) {
 }
 
 function classCommitClick(d, i) {
-
+    if(clickedClassNum == 0) commitHistoryUnzipped = new Array();
+    let commitHistoryUnzippedTemp = new Array();
     clickedClassNum++;
-    commitHistoryUnzipped = new Array();
     commitHistoryZipped.forEach(e => {
         if(e.class_ind == d.class_ind)
             e.origins.forEach(f => {
-                commitHistoryUnzipped.push({
+                commitHistoryUnzippedTemp.push({
                     zipped : e,
                     unzipped : f
                 });
             });
     })
-    mainCircleView.selectAll(".unzipped_class_ind_".concat(d.class_ind.toString()))
-            .data(filterCommitHistoryUnzipped(), d => d.unzipped.sha)
+    commitHistoryUnzipped = commitHistoryUnzipped.concat(commitHistoryUnzippedTemp);
+    mainUnzippedView.selectAll(".unzipped_class_ind_".concat(d.class_ind.toString()))
+            .data(filterCommitHistoryUnzipped(commitHistoryUnzippedTemp), d => d.unzipped.sha)
             .join(
                 enter =>  {
                     inTransition++;
@@ -91,12 +95,10 @@ function classCommitClick(d, i) {
                          .attr("cy", d => y(d.unzipped))
                          .attr("r", d =>  rz(d.unzipped))
                          .style("opacity", 0.75)
-                         
-                    
-                }
+                },
             )
     
-    scrollCircleView.selectAll(".unzipped_class_ind_".concat(d.class_ind.toString()))
+    scrollUnzippedView.selectAll(".unzipped_class_ind_".concat(d.class_ind.toString()))
                     .data(commitHistoryUnzipped, d => d.unzipped.sha)
                     .join(
                         enter => {
@@ -132,7 +134,11 @@ function unzippedClassCommitDblclick(d,i) {
 
     inTransition++;
     setTimeout(() => { inTransition--; }, 800);
-    let unzippedCommitsMain = mainView.selectAll(".unzipped_class_ind_".concat(d.zipped.class_ind.toString()));
+    commitHistoryUnzipped = commitHistoryUnzipped.filter(function(e) {
+        if (d.zipped.class_ind == e.zipped.class_ind) return false;
+        else return true;
+    })
+    let unzippedCommitsMain = mainUnzippedView.selectAll(".unzipped_class_ind_".concat(d.zipped.class_ind.toString()));
     unzippedCommitsMain.transition()
                  .duration(500)
                  .attr("cx", d => x(d.zipped))
@@ -218,10 +224,10 @@ function filterZippedComit(zippedCommits) {
     return filteredCommitHistory;
 }
 
-function filterCommitHistoryUnzipped() {
+function filterCommitHistoryUnzipped(commitHistoryUnzipped) {
     let filterRange = [scrollMoverRange[0] - 5, scrollMoverRange[1] + 5]
     let filteredCommitHistory = commitHistoryUnzipped.filter(function(d) {
-        return d.zipped.commit_ind > filterRange[0] && d.zipped.commit_ind < filterRange[1];
+        return d.unzipped.commit_ind > filterRange[0] && d.unzipped.commit_ind < filterRange[1];
     });
     return filteredCommitHistory;
 }

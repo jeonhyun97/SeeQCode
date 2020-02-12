@@ -46,3 +46,6 @@ let scrollViewClassScale;
 // circle svg container in main & scroll view
 let mainCircleView;
 let scrollCircleView;
+
+let mainUnzippedView;
+let scrollUnzippedView;
