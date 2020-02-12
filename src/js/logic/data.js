@@ -27,12 +27,13 @@ function initCommitHistory(author2Color) {
     let i = 0;
     for( ; i < SeeQ_data.length; i++) {
         let current_commits = SeeQ_data[i].commits;
-        for(let j = 0; j < current_commits.length; j++) {
+        for (let j = 0; j < current_commits.length; j++) {
             commitHistory.push({
                 class_ind  : i,
                 commit_ind : current_commits[j].num,
                 score      : mockScore(current_commits[j].score),
-                info       : current_commits[j]
+                info       : current_commits[j],
+                sha        : current_commits[j].sha
             });
             authors.add(current_commits[j].author);
         }
@@ -55,12 +56,14 @@ function initZippedCommitHistory(author2Color) {
             let j_sum     = 0,
                 score_sum = 0,
                 shaSum    = "",
+                origins   = new Array();
                 cardinal  = current_stack.length;
             while(current_stack.length != 0) {
                 element    = current_stack.pop();
                 j_sum     += element.commit_ind;
                 score_sum += element.score;
                 shaSum    += element.sha;
+                origins.push(element);
             }
             let j_average     = j_sum / cardinal;
             let score_average = Math.sqrt(score_sum);
@@ -70,7 +73,8 @@ function initZippedCommitHistory(author2Color) {
                 score      : score_average,
                 sha        : shaSum,
                 color      : author2Color.get(current_author),
-                author     : current_author
+                author     : current_author,
+                origins    : origins
             });
             current_i      = commitHistory[i].class_ind;
             current_author = commitHistory[i].info.author;

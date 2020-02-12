@@ -6,7 +6,7 @@ function initMainCircles() {
                              .attr("id", "mainCircleView");
 
     mainCircleView.selectAll("circle")
-                  .data(filterCommitHistory(), d => d.sha + d.color + d.score)
+                  .data(filterCommitHistory(), d => d.sha)
                   .join(
                       enter => {
                           enter.append("circle")
@@ -15,9 +15,10 @@ function initMainCircles() {
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
                                .attr("fill", d => d.color)
-                               .style("opacity", 0.35)
-                               .on("mouseover", class_commit_hover_over)
-                               .on("mouseout", class_commit_hover_out);
+                               .style("opacity", 0.3)
+                               .on("mouseover", classCommitHoverOver)
+                               .on("mouseout", classCommitHoverOut)
+                               .on("click", classCommitClick);
                       }
                   );
 }
@@ -25,7 +26,7 @@ function initMainCircles() {
 function updateMainCircles() {
 
     mainCircleView.selectAll("circle")
-                  .data(filterCommitHistory(), d => d.sha + d.color + d.score)
+                  .data(filterCommitHistory(), d => d.sha)
                   .join(
                       enter => {
                           enter.append("circle")
@@ -34,9 +35,10 @@ function updateMainCircles() {
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
                                .attr("fill", d => d.color)
-                               .style("opacity", 0.35)
-                               .on("mouseover", class_commit_hover_over)
-                               .on("mouseout", class_commit_hover_out);
+                               .style("opacity", 0.3)
+                               .on("mouseover", classCommitHoverOver)
+                               .on("mouseout", classCommitHoverOut)
+                               .on("click", classCommitClick);
                       },
                       update => {
                           update.attr("cx", d => x(d))
@@ -50,10 +52,10 @@ function initScrollCircles() {
     scrollCircleView = scrollView.append("g")
                                  .attr("id", "scrollCircleView");
     
-    let scrollViewCommitScale = d3.scaleLinear()
+    scrollViewCommitScale = d3.scaleLinear()
                                   .domain([0, totalCommitNum])
                                   .range([0, viewWidth])
-    let scrollViewClassScale  = d3.scaleLinear()
+    scrollViewClassScale  = d3.scaleLinear()
                                   .domain([-3, totalClassNum + 3])
                                   .range([0, d3.select("#scrollView").node().getBBox().height]);
 
@@ -67,17 +69,17 @@ function initScrollCircles() {
                                  .attr("cy", d => scrollViewClassScale(d.class_ind))
                                  .attr("r", d => r(d) / 8)
                                  .attr("fill", d => d.color)
-                                 .style("opacity", 0.35);
+                                 .style("opacity", 0.3);
                         }
-                    )
+                    );
 }
 
 function updateScrollCircles() {
 
-    let scrollViewCommitScale = d3.scaleLinear()
+    scrollViewCommitScale = d3.scaleLinear()
                                   .domain([0, totalCommitNum])
                                   .range([0, viewWidth])
-    let scrollViewClassScale = d3.scaleLinear()
+    scrollViewClassScale = d3.scaleLinear()
                                  .domain([-3, totalClassNum + 3])
                                  .range([0, d3.select("#scrollView").node().getBBox().height]);
 

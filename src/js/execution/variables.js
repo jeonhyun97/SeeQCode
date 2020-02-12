@@ -3,6 +3,10 @@
 // Commit History & Commit Hisoty zipped for visualization
 let commitHistory = new Array();
 let commitHistoryZipped = new Array();
+// Commit History unzipped by the click
+let commitHistoryUnzipped = new Array(); 
+// 
+let commitHistoryRemovedZipped = new Array();
 
 // Total Commit & Class #
 let totalCommitNum;
@@ -34,9 +38,11 @@ let scrollMoverRange;
 let commitScale;    // x axis
 let classScale;     // y axis
 
-
+// scroll view scale variables;
+let scrollViewCommitScale;
+let scrollViewClassScale;
 /* ============== CIRCLES ============== */
 
 // circle svg container in main & scroll view
 let mainCircleView;
-let scrollCircleView
+let scrollCircleView;
