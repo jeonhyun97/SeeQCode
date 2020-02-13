@@ -17,9 +17,15 @@ function readTextFile(file) {
 
 
 
-function initManual() {
+function initManualDoc() {
     let html = new showdown.Converter().makeHtml(readTextFile("../doc/manual.md"));
     document.getElementById("manualDiv").innerHTML = html;
 }
 
-initManual();
+function initAboutDoc() {
+    let html = new showdown.Converter().makeHtml(readTextFile("../doc/about.md"));
+    document.getElementById("aboutDiv").innerHTML = html;
+}
+
+initManualDoc();
+initAboutDoc();
