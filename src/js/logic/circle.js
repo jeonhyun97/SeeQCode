@@ -49,7 +49,8 @@ function updateMainCircles() {
                                .on("mousemove", moveZippedTooltip);
                       },
                       update => {
-                          update.attr("cx", d => x(d))
+                          update.attr("class", d => "class_ind_".concat(d.class_ind.toString()))
+                                .attr("cx", d => x(d))
                                 .attr("cy", d => y(d));
                       },
                       exit => { exit.remove(); }
@@ -97,6 +98,7 @@ function updateScrollCircles() {
                                  .range([0, d3.select("#scrollView").node().getBBox().height]);
 
     scrollCircleView.selectAll("circle")
+                    .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
                     .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
                     .attr("cy", d => scrollViewClassScale(d.class_ind))
                     .attr("r", d => r(d) / 8);
