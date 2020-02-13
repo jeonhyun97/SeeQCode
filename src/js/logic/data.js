@@ -35,12 +35,16 @@ function initCommitHistory(author2Color) {
                 commit_ind : current_commits[j].num,
                 score      : mockScore(current_commits[j].score),
                 info       : current_commits[j],
-                sha        : current_commits[j].sha
+                sha        : current_commits[j].sha,
+                color      : "undefined"
             });
             authors.add(current_commits[j].author);
         }
     }
     i = 0; authors.forEach(e => author2Color.set(e, colors[i++]));
+    commitHistory.forEach(e => {
+        e.color = author2Color.get(e.info.author);
+    })
 }
 
 // Generate zipped class commit history ( combine if consecutive )

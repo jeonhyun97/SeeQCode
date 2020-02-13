@@ -52,7 +52,7 @@ function unzippedClassCommitHoverOver(d, i) {
     
       d3.selectAll(".unzipped_class_ind_".concat(d.zipped.class_ind.toString())).raise();
 
-    showUnzippedTooltip();
+    showUnzippedTooltip(d.unzipped);
 }
 
 function unzippedClassCommitHoverOut(d, i) {

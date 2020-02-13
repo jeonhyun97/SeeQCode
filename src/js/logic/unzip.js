@@ -14,6 +14,7 @@ function updateUnzippedMainCircles() {
                                .on("mouseover", unzippedClassCommitHoverOver)
                                .on("mouseout", unzippedClassCommitHoverOut)
                                .on("dblclick", unzippedClassCommitDblclick)
+                               .on("mousemove", moveUnzippedTooltip)
                       },
                       update => {
                           update.attr("cx", d => x(d.unzipped))
