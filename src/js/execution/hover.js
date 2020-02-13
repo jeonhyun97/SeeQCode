@@ -107,7 +107,7 @@ function classCommitClick(d, i) {
             )
     
     scrollUnzippedView.selectAll(".unzipped_class_ind_".concat(d.class_ind.toString()))
-                    .data(commitHistoryUnzipped, d => d.unzipped.sha)
+                    .data(commitHistoryUnzippedTemp, d => d.unzipped.sha)
                     .join(
                         enter => {
                             enter.append("circle")
