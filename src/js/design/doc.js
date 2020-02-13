@@ -18,7 +18,6 @@ function readTextFile(file) {
 
 
 function initManual() {
-    
     let html = new showdown.Converter().makeHtml(readTextFile("../doc/manual.md"));
     document.getElementById("manualDiv").innerHTML = html;
 }

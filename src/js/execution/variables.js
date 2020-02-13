@@ -41,6 +41,7 @@ let classScale;     // y axis
 // scroll view scale variables;
 let scrollViewCommitScale;
 let scrollViewClassScale;
+
 /* ============== CIRCLES ============== */
 
 // circle svg container in main & scroll view
@@ -49,3 +50,14 @@ let scrollCircleView;
 
 let mainUnzippedView;
 let scrollUnzippedView;
+
+/* ============== TOOTTIP ============== */
+
+let zippedTooltip;
+let unzippedTooltip;
+
+let zippedTooltipRect;
+let unzippedTooltipRect;
+
+let zippedTooltipText;
+let unzippedTooltipText;

@@ -19,6 +19,8 @@ function classCommitHoverOver(d, i) {
       .style("opacity", 1.0);
     
     d3.selectAll(".class_ind_".concat(d.class_ind.toString())).raise();
+
+    showZippedTooltip(d);
     
 }
 
@@ -36,6 +38,9 @@ function classCommitHoverOut(d, i) {
           .duration(400)
           .style("opacity", 0.3);
     }
+
+    hideZippedTooltip();
+
 }
 
 function unzippedClassCommitHoverOver(d, i) {
@@ -47,6 +52,7 @@ function unzippedClassCommitHoverOver(d, i) {
     
       d3.selectAll(".unzipped_class_ind_".concat(d.zipped.class_ind.toString())).raise();
 
+    showUnzippedTooltip();
 }
 
 function unzippedClassCommitHoverOut(d, i) {
@@ -56,6 +62,7 @@ function unzippedClassCommitHoverOut(d, i) {
       .duration(100)
       .style("opacity", 0.75);
 
+    hideUnzippedTooltip();
 }
 
 function classCommitClick(d, i) {
@@ -89,6 +96,7 @@ function classCommitClick(d, i) {
                          .on("mouseover", unzippedClassCommitHoverOver)
                          .on("mouseout", unzippedClassCommitHoverOut)
                          .on("dblclick", unzippedClassCommitDblclick)
+                         .on("mousemove", moveUnzippedTooltip)
                          .transition()
                          .duration(700)
                          .attr("cx", d => x(d.unzipped))
@@ -128,6 +136,8 @@ function classCommitClick(d, i) {
         }
         else return true;
     });
+
+    hideZippedTooltip();
 }
 
 function unzippedClassCommitDblclick(d,i) {
@@ -151,6 +161,8 @@ function unzippedClassCommitDblclick(d,i) {
                          .attr("cx", d => scrollViewCommitScale(d.zipped.commit_ind) + margin.left)
                          .attr("cy", d => scrollViewClassScale(d.zipped.class_ind))
                          .attr("r", d => r(d.zipped) / 8);
+    
+    hideUnzippedTooltip();
     setTimeout(() => {        
         let zippedCommits = commitHistoryRemovedZipped.filter(function(e) {
             if(e.class_ind == d.zipped.class_ind) return true;
@@ -180,6 +192,7 @@ function unzippedClassCommitDblclick(d,i) {
                              .on("mouseover", classCommitHoverOver)
                              .on("mouseout", classCommitHoverOut)
                              .on("click", classCommitClick)
+                             .on("mousemove", moveZippedTooltip)
                              .transition()
                              .duration(300)
                              .style("opacity", targetOpacity);
