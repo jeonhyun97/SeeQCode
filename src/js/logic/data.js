@@ -30,6 +30,8 @@ function initCommitHistory(author2Color) {
         for (let j = 0; j < current_commits.length; j++) {
             commitHistory.push({
                 class_ind  : i,
+                class_name : SeeQ_data[i].name,
+                class_mod  : SeeQ_data[i].modifier,
                 commit_ind : current_commits[j].num,
                 score      : mockScore(current_commits[j].score),
                 info       : current_commits[j],
@@ -69,6 +71,8 @@ function initZippedCommitHistory(author2Color) {
             let score_average = Math.sqrt(score_sum);
             commitHistoryZipped.push({
                 class_ind  : current_i,
+                class_name : origins[0].class_name,
+                class_mod  : origins[0].class_mod,
                 commit_ind : j_average,
                 score      : score_average,
                 sha        : shaSum,

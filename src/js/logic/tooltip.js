@@ -10,15 +10,16 @@ function initTooltips() {
 
     zippedTooltipRect = zippedTooltipBox.append("rect")
                                         .attr("id", "zippedToolTipRect")
-                                        .attr("width", 100)
-                                        .attr("height", 70)
-                                        .attr("fill", "white")
+                                        .attr("rx", 15)
+                                        .attr("ry", 15)
+                                        .attr("fill", "#f2efff")
                                         .attr("stroke", "black")
-                                        .attr("stroke-width", 3.0);
+                                        .attr("stroke-width", 2.5);
 
     zippedTooltipText = zippedTooltipBox.append("text")
                                         .attr("fill", "black")
-                                        .attr("y", 25);
+                                        .attr("y", 25)
+                                        .style("user-select", "none");
     
 
     unzippedTooltip = d3.select("#mainViewDiv").append("div");
@@ -40,23 +41,35 @@ function initTooltips() {
     unzippedTooltipText = unzippedTooltipBox.append("text")
                                             .attr("fill", "black")
                                             .attr("x", 15)
-                                            .attr("y", 20);
+                                            .attr("y", 20)
+                                            .style("user-select", "none");
     
 }
 
 function showZippedTooltip(d) {
-    console.log(d);
 
+    let signature = d.class_name;
+    if(d.class_mod != "NONE") signature = d.class_mod + " " + signature;
+    let score = d.score * d.score;
+    let author = d.author;
+    let zipNum = d.origins.length;
+
+
+    let textData = new Array();
+    textData.push(signature);
+    textData.push("author: " + author);
+    textData.push("score: " + score);
+    textData.push("cardinality: " + zipNum);
     
-    let text1 = "This is the test text text text sss";
-    let text2 = "Gae Kul JAM JAM";
-    let text3 = "BABBAB"
-    let text4 = "This is the testss";
+    
     zippedTooltipText.selectAll("tspan").remove();
-    zippedTooltipText.append("tspan").text(text1).attr("dy", 0).attr("x", 15);
-    zippedTooltipText.append("tspan").text(text2).attr("dy", 20).attr("x", 15);
-    zippedTooltipText.append("tspan").text(text3).attr("dy", 20).attr("x", 15);
-    zippedTooltipText.append("tspan").text(text4).attr("dy", 20).attr("x", 15);
+
+    zippedTooltipText.append("tspan").text(textData[0])
+                     .attr("dy", 0).attr("x", 15)
+                     .style("font", "bold 16px Courier New")
+                     .style("fill", d.color);
+    for(let i = 1; i < textData.length; i++) 
+        zippedTooltipText.append("tspan").text(textData[i]).attr("dy", 20).attr("x", 25);
 
 
     let textMaxLength = zippedTooltipText.node().getBBox().width;
