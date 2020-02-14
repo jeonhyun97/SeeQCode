@@ -17,6 +17,10 @@ function classCommitHoverOver(d, i) {
       .transition()
       .duration(100)
       .style("opacity", 1.0);
+
+
+    drawHierarchyGraph(d);
+
     
     d3.selectAll(".class_ind_".concat(d.class_ind.toString())).raise();
 
@@ -87,7 +91,7 @@ function classCommitDblclick(d, i) {
                     setTimeout(() => { inTransition--; }, 700);
 
                     enter.append("circle")
-                         .attr("class", d => "unzipped_class_ind_".concat(d.zipped.class_ind.toString()))
+                         .attr("class", d => generateClassListUnzipped(d.zipped))
                          .attr("cx", d => x(d.zipped))
                          .attr("cy", d => y(d.zipped))
                          .attr("r", d => r(d.zipped))
@@ -111,7 +115,7 @@ function classCommitDblclick(d, i) {
                     .join(
                         enter => {
                             enter.append("circle")
-                                 .attr("class", d => "unzipped_class_ind_".concat(d.zipped.class_ind.toString()))
+                                 .attr("class", d => generateClassListUnzipped(d.zipped))
                                  .attr("cx", d => scrollViewCommitScale(d.zipped.commit_ind) + margin.left)
                                  .attr("cy", d => scrollViewClassScale(d.zipped.class_ind))
                                  .attr("r", d => r(d.zipped) / 8)
@@ -183,7 +187,7 @@ function unzippedClassCommitDblclick(d,i) {
                 .join(
                     enter => {
                         enter.append("circle")
-                             .attr("class", "class_ind_".concat(d.zipped.class_ind.toString()))
+                             .attr("class", generateClassList(d.zipped))
                              .attr("cx", d => x(d))
                              .attr("cy", d => y(d))
                              .attr("r", d => r(d))
@@ -205,7 +209,7 @@ function unzippedClassCommitDblclick(d,i) {
                   .join(
                         enter => {
                             enter.append("circle")
-                                 .attr("class", "class_ind_".concat(d.zipped.class_ind.toString()))
+                                 .attr("class", generateClassList(d.zipped))
                                  .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
                                  .attr("cy", d => scrollViewClassScale(d.class_ind))
                                  .attr("r", d => r(d) / 8)

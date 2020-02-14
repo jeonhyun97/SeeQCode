@@ -13,10 +13,7 @@ function initMainCircles() {
                   .join(
                       enter => {
                           enter.append("circle")
-                               .attr("class", d => {
-                                   let text = "class_ind_".concat(d.class_ind.toString());
-                                   return text;
-                                })
+                               .attr("class", d => generateClassList(d))
                                .attr("cx", d => x(d))
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
@@ -40,7 +37,7 @@ function updateMainCircles() {
                   .join(
                       enter => {
                           enter.append("circle")
-                               .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
+                               .attr("class", d => generateClassList(d))
                                .attr("cx", d => x(d))
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
@@ -52,7 +49,7 @@ function updateMainCircles() {
                                .on("mousemove", moveZippedTooltip);
                       },
                       update => {
-                          update.attr("class", d => "class_ind_".concat(d.class_ind.toString()))
+                          update.attr("class", d => generateClassList(d))
                                 .attr("cx", d => x(d))
                                 .attr("cy", d => y(d));
                       },
@@ -81,7 +78,7 @@ function initScrollCircles() {
                     .join(
                         enter => {
                             enter.append("circle")
-                                 .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
+                                 .attr("class", d => generateClassList(d))
                                  .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
                                  .attr("cy", d => scrollViewClassScale(d.class_ind))
                                  .attr("r", d => r(d) / 8)
@@ -101,7 +98,7 @@ function updateScrollCircles() {
                                  .range([0, d3.select("#scrollView").node().getBBox().height]);
 
     scrollCircleView.selectAll("circle")
-                    .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
+                    .attr("class", d => generateClassList(d))
                     .attr("cx", d => scrollViewCommitScale(d.commit_ind) + margin.left)
                     .attr("cy", d => scrollViewClassScale(d.class_ind))
                     .attr("r", d => r(d) / 8);
@@ -124,6 +121,22 @@ function filterCommitHistory() {
         return d.commit_ind > filterRange[0] && d.commit_ind < filterRange[1];
     });
     return filteredCommitHistory;
+}
+
+function generateClassListUnzipped(d) {
+    let text = "unzipped_class_ind_".concat(d.class_ind.toString());
+    d.hier_group.forEach(function(e) {
+        text += " " + e.type + "_" + e.index;
+    });
+    return text;
+}
+
+function generateClassList(d) {
+    let text = "class_ind_".concat(d.class_ind.toString());
+    d.hier_group.forEach(function(e) {
+        text += " " + e.type + "_" + e.index;
+    });
+    return text;
 }
 
 /* ======================================================= */

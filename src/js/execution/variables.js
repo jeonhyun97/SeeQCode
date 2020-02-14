@@ -61,3 +61,8 @@ let unzippedTooltipRect;
 
 let zippedTooltipText;
 let unzippedTooltipText;
+
+/* ============== HIERARCHY ============== */
+
+let mainHierarchyView;
+let scrollHierarchyView;

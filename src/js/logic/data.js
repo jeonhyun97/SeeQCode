@@ -99,13 +99,13 @@ function initZippedCommitHistory(author2Color) {
 
 function initClassCommitHierarchy() {
     SeeQ_data.forEach(function (e, i){
-        registerChildren(e, i);
-        registerParent(e, i);
+        registerChildren(e, i, 1);
+        registerParent(e, i, 1);
     });
 }
 
 
-function registerChildren(e, parentIndex) {
+function registerChildren(e, parentIndex, dist) {
     e.children.forEach(function (d) {
         let childCommits = commitHistoryZipped.filter(function(c) {
             if (d == c.class_name) return true;
@@ -114,7 +114,8 @@ function registerChildren(e, parentIndex) {
         childCommits.forEach(function(c) {
             c.hier_group.push({
                 type  : "childOf",
-                index : parentIndex
+                index : parentIndex,
+                dist : dist
             });
         });
         let childData = SeeQ_data.find(function(c) {
@@ -122,11 +123,11 @@ function registerChildren(e, parentIndex) {
             else return false;
         });
         if(childData != undefined)
-            registerChildren(childData, parentIndex);
+            registerChildren(childData, parentIndex, dist + 1);
     })
 }
 
-function registerParent(e, childIndex) {
+function registerParent(e, childIndex, dist) {
     if(e.parent == "NULL") return;
     else {
         let myFirstCommit = commitHistoryZipped.filter(function(d) {
@@ -138,17 +139,39 @@ function registerParent(e, childIndex) {
             if (e.parent == d.class_name && d.commit_ind < myFirstCommitIndex) return true;
             else return;
         });
-        let parentLastCommit = parentCommits[parentCommits.length - 1];
-        parentLastCommit.hier_group.push({
-            type : "parentOf",
-            index : childIndex
-        });
+        let parentTotalCommits = commitHistoryZipped.filter(function(d) {
+            if (e.parent == d.class_name) return true;
+            else return false;
+        })
+        let parentLastCommit;
+        if(parentCommits.length > 0)
+            parentLastCommit = parentCommits[parentCommits.length - 1];
+        else
+            parentLastCommit = parentTotalCommits[0];
+
+        parentTotalCommits.forEach(function (e) {
+            if(e == parentLastCommit) {
+                parentLastCommit.hier_group.push({
+                    type : "parentOf",
+                    index : childIndex, 
+                    dist : dist
+                });
+            }
+            else {
+                e.hier_group.push({
+                    type : "uncleOf",
+                    index : childIndex, 
+                    dist : dist
+                });
+            }
+        })
+        
         let parentData = SeeQ_data.find(function(d) {
             if (e.parent == d.name) return true;
             else return false;
         })
         if(parentData != undefined)
-            registerParent(parentData, childIndex);
+            registerParent(parentData, childIndex, dist + 1);
     }
 }
 

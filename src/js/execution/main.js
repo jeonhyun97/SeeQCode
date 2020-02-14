@@ -7,3 +7,4 @@ initScrollMover();
 initAxis();
 initMainCircles();
 initScrollCircles();
+initHierarchyView();
