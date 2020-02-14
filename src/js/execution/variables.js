@@ -3,10 +3,10 @@
 // Commit History & Commit Hisoty zipped for visualization
 let commitHistory = new Array();
 let commitHistoryZipped = new Array();
-// Commit History unzipped by the click
+// Commit History unzipped / zipped by click
 let commitHistoryUnzipped = new Array(); 
-// 
 let commitHistoryRemovedZipped = new Array();
+
 
 // Total Commit & Class #
 let totalCommitNum;

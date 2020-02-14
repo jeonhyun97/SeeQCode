@@ -6,6 +6,7 @@ function initData() {
     let author2Color = new Map()
     initCommitHistory(author2Color);
     initZippedCommitHistory(author2Color);
+    initClassCommitHierarchy();
     calculateTotalClassCommitNum();
 }
 
@@ -82,12 +83,83 @@ function initZippedCommitHistory(author2Color) {
                 sha        : shaSum,
                 color      : author2Color.get(current_author),
                 author     : current_author,
-                origins    : origins
+                origins    : origins,
+                heir_group : new Array()   
+                // if "3" is the child class of "1" and "2", then heir_group = [1, 2];
             });
             current_i      = commitHistory[i].class_ind;
             current_author = commitHistory[i].info.author;
             current_stack.push(commitHistory[i]);
         }
+    }
+}
+
+
+
+
+function initClassCommitHierarchy() {
+
+    SeeQ_data.forEach(function (e, i){
+        let myCommits, parentCommit, childCommits;
+
+        myCommits = commitHistoryZipped.filter(function (d) {
+            if(e.name == d.name) return true;
+            else return false;
+        });
+        registerChildren(e, i);
+        registerParent(e, i);
+
+    });
+
+    console.log(commitHistoryZipped);
+}
+
+
+function registerChildren(e, parentIndex) {
+    e.children.forEach(function (d) {
+        let childCommits = commitHistoryZipped.filter(function(c) {
+            if (d == c.class_name) return true;
+            else return false;
+        });
+        childCommits.forEach(function(c) {
+            c.heir_group.push({
+                type  : "childOf",
+                index : parentIndex
+            });
+        });
+        let childData = SeeQ_data.find(function(c) {
+            if (d == c.class_name) return true;
+            else return false;
+        });
+        if(childData != undefined)
+            registerChildren(childData, parentIndex);
+    })
+}
+
+function registerParent(e, childIndex) {
+    if(e.parent == "NULL") return;
+    else {
+        let myFirstCommit = commitHistoryZipped.filter(function(d) {
+            if (e.name == d.class_name) return true;
+            else return false;
+        })[0];
+        let myFirstCommitIndex = myFirstCommit.commit_ind;
+        let parentCommits = commitHistoryZipped.filter(function(d) {
+            if (e.parent == d.class_name && d.commit_ind < myFirstCommitIndex) return true;
+            else return;
+        });
+        let parentLastCommit = parentCommits[parentCommits.length - 1];
+        console.log(parentLastCommit);
+        parentLastCommit.heir_group.push({
+            type : "parentOf",
+            index : childIndex
+        });
+        let parentData = SeeQ_data.find(function(d) {
+            if (e.parent == d.class_name) return true;
+            else return false;
+        })
+        if(parentData != undefined)
+            registerParent(parentData, childIndex);
     }
 }
 
