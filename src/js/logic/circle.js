@@ -13,7 +13,10 @@ function initMainCircles() {
                   .join(
                       enter => {
                           enter.append("circle")
-                               .attr("class", d => "class_ind_".concat(d.class_ind.toString()))
+                               .attr("class", d => {
+                                   let text = "class_ind_".concat(d.class_ind.toString());
+                                   return text;
+                                })
                                .attr("cx", d => x(d))
                                .attr("cy", d => y(d))
                                .attr("r", d => r(d))
