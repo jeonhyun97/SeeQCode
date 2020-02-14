@@ -65,7 +65,7 @@ function unzippedClassCommitHoverOut(d, i) {
     hideUnzippedTooltip();
 }
 
-function classCommitClick(d, i) {
+function classCommitDblclick(d, i) {
     if(clickedClassNum == 0) commitHistoryUnzipped = new Array();
     let commitHistoryUnzippedTemp = new Array();
     clickedClassNum++;
@@ -191,7 +191,7 @@ function unzippedClassCommitDblclick(d,i) {
                              .style("opacity", 1)
                              .on("mouseover", classCommitHoverOver)
                              .on("mouseout", classCommitHoverOut)
-                             .on("click", classCommitClick)
+                             .on("dblclick", classCommitDblclick)
                              .on("mousemove", moveZippedTooltip)
                              .transition()
                              .duration(300)

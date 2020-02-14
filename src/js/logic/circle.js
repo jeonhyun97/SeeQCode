@@ -21,7 +21,7 @@ function initMainCircles() {
                                .style("opacity", 0.3)
                                .on("mouseover", classCommitHoverOver)
                                .on("mouseout", classCommitHoverOut)
-                               .on("click", classCommitClick)
+                               .on("dblclick", classCommitDblclick)
                                .on("mousemove", moveZippedTooltip)
                       }
                   );
@@ -45,7 +45,7 @@ function updateMainCircles() {
                                .style("opacity", defaultOpacity)
                                .on("mouseover", classCommitHoverOver)
                                .on("mouseout", classCommitHoverOut)
-                               .on("click", classCommitClick)
+                               .on("dblclick", classCommitDblclick)
                                .on("mousemove", moveZippedTooltip);
                       },
                       update => {
