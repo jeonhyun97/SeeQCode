@@ -6,6 +6,9 @@ $(window).resize(function() {
     updateAxis(true);
     updateMainCircles();
     updateScrollCircles();
+
+    if(window.innerWidth < 900)
+      document.getElementById("archiImg").style.width = (window.innerWidth - 100).toString().concat("px");
 })
           
 // window scrolling

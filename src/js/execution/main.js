@@ -1,3 +1,6 @@
+// documentation
+initDoc();
+
 // generate basic data drived from a SeeQJson data
 initData();
 initView();
@@ -8,3 +11,4 @@ initAxis();
 initMainCircles();
 initScrollCircles();
 initHierarchyView();
+

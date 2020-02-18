@@ -10,7 +10,9 @@ body {
 .jumbotron {
     background-color: #cdcdee;
     text-shadow: #bcbcff 0.2em 0.2em 0.2em;
-    padding: 25px;
+    padding-left: 25px;
+    padding-top: 14px;
+    padding-bottom: 14px;
     margin: 0px;
 }
 
@@ -39,4 +41,12 @@ body {
     position: fixed;
     bottom: 12px;
     right: 12px;
+}
+
+#manualDiv {
+    padding-left: 4px;
+}
+
+#aboutDiv {
+    padding-left: 4px;
 }

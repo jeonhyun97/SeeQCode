@@ -1,11 +1,10 @@
 
-##### Purpose
 
-SeeQCode
+SeeQCodSeeQCode aims effective/efficient visualization and analysis of the contributions in a VCS repository from each author. By providing an extremely-free scalable interface, the manager can easily observe the commit history and measure the quality of the work done by each contributor.
 
 ##### Architecture
 
-<img src="../doc/img/diagram.png" width="800">
+<img id="archiImg" src="../doc/img/diagram.png">
 
 
 The overall program structure is like this:

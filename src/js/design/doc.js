@@ -25,7 +25,12 @@ function initManualDoc() {
 function initAboutDoc() {
     let html = new showdown.Converter().makeHtml(readTextFile("../doc/about.md"));
     document.getElementById("aboutDiv").innerHTML = html;
+    let imgWidth = window.innerWidth - 100 > 800 ? 800 : window.innerWidth - 100;
+    document.getElementById("archiImg").style.width = (imgWidth).toString().concat("px");
 }
 
-initManualDoc();
-initAboutDoc();
+
+function initDoc() {
+    initManualDoc();
+    initAboutDoc();
+}

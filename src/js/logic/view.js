@@ -3,7 +3,7 @@
 /* ======================================================= */
 
 function initView() {
-    let program = d3.select("#program");
+    let program = d3.select("#view");
 
     mainView = program.append("div")
                        .attr("id", "mainViewDiv")
