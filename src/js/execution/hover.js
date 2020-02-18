@@ -43,6 +43,8 @@ function classCommitHoverOut(d, i) {
           .style("opacity", 0.3);
     }
 
+    eraseHierarchyGraph(d);
+
     hideZippedTooltip();
 
 }
@@ -142,6 +144,7 @@ function classCommitDblclick(d, i) {
     });
 
     hideZippedTooltip();
+    eraseHierarchyGraph(d);
 }
 
 function unzippedClassCommitDblclick(d,i) {

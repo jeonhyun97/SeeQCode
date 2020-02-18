@@ -5,10 +5,12 @@ function initAxis() {
 
     let axisGTop = mainView.append('g')
                            .attr("id", "top_axis")
-                           .attr("transform", translate(margin.left, margin.top));
+                           .attr("transform", translate(margin.left, margin.top))
+                           .style("user-select", "none");
     let axisGBottom = mainView.append('g')
                               .attr("id", "bottom_axis")
-                              .attr("transform", translate(margin.left, margin.top + mainViewHeight));
+                              .attr("transform", translate(margin.left, margin.top + mainViewHeight))
+                              .style("user-select", "none");
 
     updateScrollMoverRange();
     updateClassRange();
